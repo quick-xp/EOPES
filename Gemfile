@@ -36,6 +36,7 @@ end
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4'
 #認証
 gem "omniauth-eveonline"
+gem 'devise'
 #AdminLTE
 gem 'adminlte-rails'
 
