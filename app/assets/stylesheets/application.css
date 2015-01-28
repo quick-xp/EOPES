@@ -9,5 +9,11 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require bootstrap
+ *= require font-awesome
+ *= require ionicons
+ *= require admin-lte
+ *= require iCheck/all
+ *= require datatables/dataTables.bootstrap
  *= require_tree .
  */
