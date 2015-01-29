@@ -11,6 +11,15 @@
   <a href="#" class="logo">
     EOPOS
   </a>
+  <nav class="navbar navbar-static-top" role="navigation">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>git
+      <span class="icon-bar"></span>
+    </a>
+  </nav>
 </header>
 
 <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -34,38 +43,37 @@
             <span>Industry Profit Calculator</span>
           </a>
         </li>
+        <li class="treeview">
+          <a href="#">
+            <%= image_tag("calculator.png", :size => "48x48") %>
+            <span>Charts</span>
+            <i class="fa fa-angle-left pull-right "></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/charts/morris.html"><i class="fa fa-angle-double-right"></i> Morris</a></li>
+            <li><a href="pages/charts/flot.html"><i class="fa fa-angle-double-right"></i> Flot</a></li>
+            <li><a href="pages/charts/inline.html"><i class="fa fa-angle-double-right"></i> Inline charts</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <%= image_tag("calculator.png", :size => "48x48") %>
+            <span>Charts</span>
+            <i class="fa fa-angle-left pull-right "></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/charts/morris.html"><i class="fa fa-angle-double-right"></i> Morris</a></li>
+            <li><a href="pages/charts/flot.html"><i class="fa fa-angle-double-right"></i> Flot</a></li>
+            <li><a href="pages/charts/inline.html"><i class="fa fa-angle-double-right"></i> Inline charts</a></li>
+          </ul>
+        </li>
       </ul>
-      <li class="treeview">
-        <a href="#">
-          <%= image_tag("calculator.png", :size => "48x48") %>
-          <span>Charts</span>
-          <i class="fa fa-angle-left pull-right"></i>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="pages/charts/morris.html"><i class="fa fa-angle-double-right"></i> Morris</a></li>
-          <li><a href="pages/charts/flot.html"><i class="fa fa-angle-double-right"></i> Flot</a></li>
-          <li><a href="pages/charts/inline.html"><i class="fa fa-angle-double-right"></i> Inline charts</a></li>
-        </ul>
-      </li>
     </section>
   </aside>
 
   <!-- Right side column. Contains the navbar and content of the page -->
   <aside class="right-side">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      ...
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
       <%= yield %>
-
-      <div class=".small-box">
-        s
-      </div>
-    </section>
-    <!-- /.content -->
   </aside>
   <!-- /.right-side -->
 </div>
