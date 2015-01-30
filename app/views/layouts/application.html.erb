@@ -6,79 +6,82 @@
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
-<body class="skin-black">
-<header class="header">
-  <a href="#" class="logo">
-    EOPOS
-  </a>
-  <nav class="navbar navbar-static-top" role="navigation">
-    <!-- Sidebar toggle button-->
-    <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>git
-      <span class="icon-bar"></span>
-    </a>
-  </nav>
-</header>
 
-<div class="wrapper row-offcanvas row-offcanvas-left">
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="left-side sidebar-offcanvas">
-    <section class="sidebar">
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="img/avatar3.png" class="img-circle" alt="User Image"/>
-        </div>
-        <div class="pull-left info">
-          <p>Hello, Jane</p>
+<% if user_signed_in? %>
+    <body class="skin-black">
+    <header class="header">
+      <a href="#" class="logo">
+        EOPOS
+      </a>
+      <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+      </nav>
+    </header>
 
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-        </div>
-      </div>
-      <ul class="sidebar-menu">
-        <li class="active">
-          <a href="index.html">
-            <%= image_tag("calculator.png", :size => "48x48") %>
-            <span>Industry Profit Calculator</span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <%= image_tag("calculator.png", :size => "48x48") %>
-            <span>Charts</span>
-            <i class="fa fa-angle-left pull-right "></i>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="pages/charts/morris.html"><i class="fa fa-angle-double-right"></i> Morris</a></li>
-            <li><a href="pages/charts/flot.html"><i class="fa fa-angle-double-right"></i> Flot</a></li>
-            <li><a href="pages/charts/inline.html"><i class="fa fa-angle-double-right"></i> Inline charts</a></li>
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="left-side sidebar-offcanvas">
+        <section class="sidebar">
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="img/avatar3.png" class="img-circle" alt="User Image"/>
+            </div>
+            <div class="pull-left info">
+              <p>Hello, Jane</p>
+
+              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+          </div>
+          <ul class="sidebar-menu">
+            <li class="active">
+              <a href="index.html">
+                <%= image_tag("calculator.png", :size => "48x48") %>
+                <span>Industry Profit Calculator</span>
+              </a>
+            </li>
+            <li class="treeview">
+              <a href="#">
+                <%= image_tag("calculator.png", :size => "48x48") %>
+                <span>Charts</span>
+                <i class="fa fa-angle-left pull-right "></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="pages/charts/morris.html"><i class="fa fa-angle-double-right"></i> Morris</a></li>
+                <li><a href="pages/charts/flot.html"><i class="fa fa-angle-double-right"></i> Flot</a></li>
+                <li><a href="pages/charts/inline.html"><i class="fa fa-angle-double-right"></i> Inline charts</a></li>
+              </ul>
+            </li>
+            <li class="treeview">
+              <a href="#">
+                <%= image_tag("calculator.png", :size => "48x48") %>
+                <span>Charts</span>
+                <i class="fa fa-angle-left pull-right "></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="pages/charts/morris.html"><i class="fa fa-angle-double-right"></i> Morris</a></li>
+                <li><a href="pages/charts/flot.html"><i class="fa fa-angle-double-right"></i> Flot</a></li>
+                <li><a href="pages/charts/inline.html"><i class="fa fa-angle-double-right"></i> Inline charts</a></li>
+              </ul>
+            </li>
           </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <%= image_tag("calculator.png", :size => "48x48") %>
-            <span>Charts</span>
-            <i class="fa fa-angle-left pull-right "></i>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="pages/charts/morris.html"><i class="fa fa-angle-double-right"></i> Morris</a></li>
-            <li><a href="pages/charts/flot.html"><i class="fa fa-angle-double-right"></i> Flot</a></li>
-            <li><a href="pages/charts/inline.html"><i class="fa fa-angle-double-right"></i> Inline charts</a></li>
-          </ul>
-        </li>
-      </ul>
-    </section>
-  </aside>
+        </section>
+      </aside>
 
-  <!-- Right side column. Contains the navbar and content of the page -->
-  <aside class="right-side">
-      <%= yield %>
-  </aside>
-  <!-- /.right-side -->
-</div>
-<!-- ./wrapper -->
-
-
-</body>
+      <!-- Right side column. Contains the navbar and content of the page -->
+      <aside class="right-side">
+        <%= yield %>
+      </aside>
+      <!-- /.right-side -->
+    </div>
+    <!-- ./wrapper -->
+    </body>
+<% else %>
+    <%= yield %>
+<% end %>
 </html>

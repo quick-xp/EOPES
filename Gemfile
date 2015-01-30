@@ -35,10 +35,13 @@ end
 #検索画面用
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4'
 #認証
+gem "omniauth-oauth2"
 gem "omniauth-eveonline"
 gem 'devise'
 #AdminLTE
 gem 'adminlte-rails'
+#環境設定
+gem 'dotenv-rails'
 
 group :development, :test do
   gem "rspec-rails", "~> 3.1.0"
