@@ -3,6 +3,7 @@ EOPES::Application.routes.draw do
     collection do
       get "select"
       post "select_new"
+      get "set_location"
     end
   end
 

@@ -25,7 +25,8 @@ class EstimatesController < ApplicationController
     @estimate_form.blueprint_me = 0
     @estimate_form.blueprint_te = 0
     #location
-    @region_list = [["", ""]]
+    @region_list = Master::MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @solar_system_list = [["", ""]]
     respond_with(@estimate_form)
   end
 
@@ -51,6 +52,14 @@ class EstimatesController < ApplicationController
   def destroy
     @estimate.destroy
     respond_with(@estimate)
+  end
+
+  def set_location
+    @region_list = Master::MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @region_id = params[:region_id]
+    @solar_system_list = Master::MapSolarSystem.where(:regionID => @region_id)
+    .order(:solarSystemName)
+    .map { |list| [list.solarSystemName, list.solarSystemID] }
   end
 
   private
