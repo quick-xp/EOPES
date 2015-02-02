@@ -1,0 +1,9 @@
+
+<div class="box-body">
+  <form role="form">
+    <div class="form-group">
+      <label>Select</label>
+      <%= select_tag :region_id, options_for_select(@region_list),:prompt => "All Region" ,class: 'form-control' %>
+    </div>
+  </form>
+</div>

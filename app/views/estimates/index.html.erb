@@ -1,0 +1,33 @@
+<section class="content-header">
+  <h1>Listing estimates</h1>
+</section>
+
+<section class="content">
+  <table>
+    <thead>
+    <tr>
+      <th>Type</th>
+      <th>User</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @estimates.each do |estimate| %>
+        <tr>
+          <td><%= estimate.type_id %></td>
+          <td><%= estimate.user_id %></td>
+          <td><%= link_to 'Show', estimate %></td>
+          <td><%= link_to 'Edit', edit_estimate_path(estimate) %></td>
+          <td><%= link_to 'Destroy', estimate, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Estimate', select_estimates_path %>
+</section>

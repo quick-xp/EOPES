@@ -1,0 +1,39 @@
+<section class="content-header">
+  <h1>Estimate Product</h1>
+</section>
+
+<section class="content">
+  <%= form_for @estimate_form, url: estimates_path, method: :post do |f| %>
+      <% if @estimate_form.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@estimate_form.errors.count, "error") %> prohibited this estimate from being saved:</h2>
+
+            <ul>
+              <% @estimate_form.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+
+      <div class="field">
+        <%= f.label :blueprint_type_id %>
+        <br>
+        <%= f.number_field :blueprint_type_id %>
+      </div>
+      <div class="field">
+        <%= f.label :sell_price %>
+        <br>
+        <%= f.number_field :sell_price %>
+      </div>
+      <div class="field">
+        <%= f.label :runs %>
+        <br>
+        <%= f.number_field :runs %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+  <% end %>
+</section>

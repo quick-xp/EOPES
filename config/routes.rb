@@ -1,4 +1,11 @@
 EOPES::Application.routes.draw do
+  resources :estimates do
+    collection do
+      get "select"
+      post "select_new"
+    end
+  end
+
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks"}
   get "home/index"
   get "welcome/index"

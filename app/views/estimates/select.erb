@@ -1,0 +1,29 @@
+<section class="content-header">
+  <h1>Select Estimate Item</h1>
+</section>
+
+<section class="content">
+  <%= form_for @estimate, url: select_new_estimates_path, method: :post do |f| %>
+      <% if @estimate.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@estimate.errors.count, "error") %> prohibited this estimate from being saved:</h2>
+
+            <ul>
+              <% @estimate.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+
+      <div class="form-group">
+        <label>Select Blueprint</label>
+        <%= f.collection_select :type_id, IndustryActivity.get_industry, :typeID, :typeName, {pronpt: ""}, class: 'form-control' %>
+      </div>
+      <div>
+        <%= f.submit 'Select', :class => 'btn btn-primary' %>
+      </div>
+      <br/>
+      <%= link_to 'Back', estimates_path %>
+  <% end %>
+</section>
