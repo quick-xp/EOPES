@@ -28,14 +28,7 @@ class EstimatesController < ApplicationController
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = [["", ""]]
     #material
-    @material_list = Array.new
-    3.times{
-      @material_list << EstimateMaterial.new
-    }
-    @material_list[0].type_id = 34
-    @material_list[0].price = 125.22
-    @material_list[1].type_id = 35
-    @material_list[2].type_id = 36
+    @material_list = @estimate_form.get_material_list
 
     respond_with(@estimate_form)
   end
@@ -70,6 +63,17 @@ class EstimatesController < ApplicationController
     @solar_system_list = MapSolarSystem.where(:regionID => @region_id)
     .order(:solarSystemName)
     .map { |list| [list.solarSystemName, list.solarSystemID] }
+  end
+
+  def set_material
+    #material
+    e = EstimateForm.new
+    e.blueprint_type_id = session[:type_id]
+    @material_list = e.get_material_list
+    @material_list.each_with_index do |m, i|
+      @material_list[i].price = params["price_" + i.to_s]
+      @material_list[i].total_price = params["price_" + i.to_s].to_f * @material_list[i].require_count.to_f
+    end
   end
 
   private
