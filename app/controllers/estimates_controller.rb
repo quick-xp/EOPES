@@ -27,6 +27,16 @@ class EstimatesController < ApplicationController
     #location
     @region_list = Master::MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = [["", ""]]
+    #material
+    @material_list = Array.new
+    3.times{
+      @material_list << EstimateMaterial.new
+    }
+    @material_list[0].type_id = 34
+    @material_list[0].price = 125.22
+    @material_list[1].type_id = 35
+    @material_list[2].type_id = 36
+
     respond_with(@estimate_form)
   end
 

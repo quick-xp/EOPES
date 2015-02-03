@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131092001) do
+ActiveRecord::Schema.define(version: 20150203125628) do
+
+  create_table "estimate_materials", force: true do |t|
+    t.integer  "type_id"
+    t.integer  "require_count"
+    t.decimal  "price",                  precision: 20, scale: 4
+    t.decimal  "total_price",            precision: 20, scale: 4
+    t.decimal  "jita_total_price",       precision: 20, scale: 4
+    t.decimal  "jita_average_price",     precision: 20, scale: 4
+    t.decimal  "universe_total_price",   precision: 20, scale: 4
+    t.decimal  "universe_average_price", precision: 20, scale: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "estimates", force: true do |t|
     t.integer  "type_id"

@@ -1,13 +1,12 @@
-
 <div class="box-body">
   <form role="form">
     <div class="form-group">
       <label>Select</label>
-      <%= select_tag :region_id, options_for_select(@region_list),:prompt => "All Region" ,class: 'form-control' %>
+      <%= select_tag :region_id, options_for_select(@region_list), :prompt => "All Region", class: 'form-control' %>
     </div>
     <div class="form-group">
       <label>Select</label>
-      <%= select_tag :solar_system_id, options_for_select(@solar_system_list),:prompt => "All Solar System" ,class: 'form-control' %>
+      <%= select_tag :solar_system_id, options_for_select(@solar_system_list), :prompt => "All Solar System", class: 'form-control' %>
     </div>
     <div class="form-group">
       <label>System Cost Index</label> :
@@ -16,11 +15,9 @@
   </form>
 </div>
 
-
 <script>
     $('#region_id').change(function () {
         var region_id = $("#region_id").val();
-        //alert("success");
         $.ajax({
             url: "set_location",
             type: "GET",

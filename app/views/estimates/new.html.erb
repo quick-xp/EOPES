@@ -92,6 +92,68 @@
         </div>
         <!-- Skill End-->
       </div>
+
+      <div class='col-md-12'>
+        <!-- Material Start-->
+        <div class='col-md-12'>
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Material</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-condensed">
+                <tr>
+                  <th style="width: 40px">#</th>
+                  <th>Material</th>
+                  <th>Require</th>
+                  <th>Jita Average</th>
+                  <th>Jita Total</th>
+                  <th>Universe Average</th>
+                  <th>Universe Total</th>
+                  <th>Price</th>
+                  <th>Price total</th>
+                </tr>
+                <% @material_list.each_with_index do |material, i| %>
+                    <tr>
+                      <td><%= image_tag("https://image.eveonline.com/Type/#{material.type_id}_32.png",
+                                        :alt => "Type Image") %>
+                      </td>
+                      <td>
+                        <%= InvType.get_type_name(material.type_id) %>
+                      </td>
+                      <td>
+                        <%= material.require_count %>
+                      </td>
+                      <td>
+                        <%= material.jita_average_price %>
+                      </td>
+                      <td>
+                        <%= material.jita_total_price %>
+                      </td>
+                      <td>
+                        <%= material.universe_average_price %>
+                      </td>
+                      <td>
+                        <%= material.universe_total_price %>
+                      </td>
+                      <td>
+                        <%= text_field("price", i, :value => material.price, class: 'form-control',size: 10) %>
+                      </td>
+                      <td>
+                        <%= material.total_price %>a
+                      </td>
+                    </tr>
+                <% end %>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- Material End-->
+      </div>
+
       <div class="actions">
         <%= f.submit %>
       </div>
