@@ -13,6 +13,8 @@ Bundler.require(:default, Rails.env)
 
 module EOPES
   class Application < Rails::Application
+    config.autoload_paths +=%W(#{config.root}/app/models/master)
+    config.autoload_paths +=%W(#{config.root}/app/models/form)
     config.generators do |g|
       g.test_framework :rspec,
                        fixtures: true,

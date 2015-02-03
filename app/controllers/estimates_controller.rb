@@ -19,13 +19,13 @@ class EstimatesController < ApplicationController
   end
 
   def new
-    @estimate_form = Form::EstimateForm.new
+    @estimate_form = EstimateForm.new
     @estimate_form.blueprint_type_id = session[:type_id]
     #blueprint
     @estimate_form.blueprint_me = 0
     @estimate_form.blueprint_te = 0
     #location
-    @region_list = Master::MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = [["", ""]]
     #material
     @material_list = Array.new
@@ -65,9 +65,9 @@ class EstimatesController < ApplicationController
   end
 
   def set_location
-    @region_list = Master::MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @region_id = params[:region_id]
-    @solar_system_list = Master::MapSolarSystem.where(:regionID => @region_id)
+    @solar_system_list = MapSolarSystem.where(:regionID => @region_id)
     .order(:solarSystemName)
     .map { |list| [list.solarSystemName, list.solarSystemID] }
   end
