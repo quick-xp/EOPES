@@ -34,6 +34,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :uid
       t.string :name
       t.string :token
+      t.string :refresh_token
+      t.datetime :expire
 
       t.timestamps
     end

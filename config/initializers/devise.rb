@@ -230,7 +230,7 @@ Devise.setup do |config|
   config.sign_out_via = :delete
 
   # ==> OmniAuth
-  config.omniauth(:eve_online, ENV['EVE_ONLINE_APP_ID'], ENV['EVE_ONLINE_APP_SECRET'], scope: '')
+  config.omniauth(:eve_online, ENV['EVE_ONLINE_APP_ID'], ENV['EVE_ONLINE_APP_SECRET'], scope: 'publicData')
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

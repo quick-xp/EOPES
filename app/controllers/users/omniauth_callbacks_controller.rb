@@ -5,6 +5,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     #id,name setting
     session[:user_id] = @user.uid
     session[:user_name] = @user.name
+    #GET access token
+    auth = request.env["omniauth.auth"]
+    token = auth["credentials"]["token"]
+    session[:access_token] = token
+    session[:expires_at] = auth["credentials"]["expires_at"]
+    session[:refresh_token] = auth["credentials"]["refresh_token"]
 
     if @user.persisted?
         sign_in_and_redirect @user, :event => :authentication
