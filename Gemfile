@@ -44,6 +44,8 @@ gem 'adminlte-rails'
 gem 'dotenv-rails'
 #session
 gem 'activerecord-session_store'
+#rest client
+gem "rest-client"
 
 group :development, :test do
   gem "rspec-rails", "~> 3.1.0"

@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   def get_token
     #create access token
     client = OAuth2::Client.new(ENV['EVE_ONLINE_APP_ID'], ENV['EVE_ONLINE_APP_SECRET'])
-    if token_expire?
+    if token_expired?
       refresh_token
     end
     token = session[:access_token]

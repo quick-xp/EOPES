@@ -27,8 +27,12 @@ class EstimatesController < ApplicationController
     #location
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = [["", ""]]
+    #jita price
+    @estimate_form.get_jita_price(get_token)
     #material
     @material_list = @estimate_form.get_material_list
+    #session
+    session[:estimate_form] = @estimate_form
 
     respond_with(@estimate_form)
   end
@@ -67,8 +71,7 @@ class EstimatesController < ApplicationController
 
   def set_material
     #material
-    e = EstimateForm.new
-    e.blueprint_type_id = session[:type_id]
+    e = session[:estimate_form]
     @material_list = e.get_material_list
     @material_list.each_with_index do |m, i|
       @material_list[i].price = params["price_" + i.to_s]
