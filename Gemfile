@@ -42,6 +42,8 @@ gem 'devise'
 gem 'adminlte-rails'
 #環境設定
 gem 'dotenv-rails'
+#session
+gem 'activerecord-session_store'
 
 group :development, :test do
   gem "rspec-rails", "~> 3.1.0"
