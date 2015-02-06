@@ -16,6 +16,8 @@ class EstimateForm
       r.type_id = m.materialTypeID
       r.require_count = m.quantity
       r.jita_average_price = self.jita_price.fetch(m.materialTypeID)
+      r.jita_total_price = r.jita_average_price * r.require_count
+      r.price = r.jita_average_price
       r.total_price = m.quantity * 1.00 #TODO::price
       material_list << r
     end
@@ -29,31 +31,24 @@ class EstimateForm
     jita_price = Hash::new()
     #Get The Forge Price
     materials.each do |material|
-      json = access_token.get("https://crest-tq.eveonline.com/market/10000002/orders/sell/?type=https://api-sisi.testeveonline.com/types/" + material.materialTypeID.to_s + "/")
-      markets = ActiveSupport::JSON.decode(json.response.env.body)
-      markets = markets['items']
-      # jita のみに絞り込む
-      jita_markets = Array.new
-      markets.each do |market|
-        if market['location']['id'] == 60003760
-          jita_markets << market['price']
-        end
-      end
-      # sort
-      sort_v = jita_markets.sort
+      #マーケットデータリフレッシュ(The Forge)
+      Market.refresh_market(10000002, material.materialTypeID, access_token)
+      #Jita Top 10 low Price
+      market_details = MarketDetail
+      .includes(:market)
+      .where(station_id: 60003760, markets: {type_id: material.materialTypeID})
+      .order(:price)
+      .limit(10)
+
       #average
       average_price = 0
       sum = 0.0
       count = 0
-      sort_v.each do |v|
-        sum += v
-        count += 1
-        if count > 10
-          break;
-        end
+      market_details.each do |v|
+        sum += v.price
       end
-      v = sum / count
-      jita_price.store(material.materialTypeID,v)
+      v = sum / market_details.size
+      jita_price.store(material.materialTypeID, v)
     end
     self.jita_price = jita_price
   end

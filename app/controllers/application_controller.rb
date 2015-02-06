@@ -21,8 +21,8 @@ class ApplicationController < ActionController::Base
     response = RestClient.post "https://login.eveonline.com/oauth/token",
                                :grant_type => 'refresh_token',
                                :refresh_token => session[:refresh_token],
-                               :client_id => session[:client_id],
-                               :client_secret => session[:client_secret]
+                               :client_id => ENV['EVE_ONLINE_APP_ID'],
+                               :client_secret => ENV['EVE_ONLINE_APP_SECRET']
 
     refresh_hash = JSON.parse(response.body)
     session[:access_token] = refresh_hash[:access_token]
