@@ -18,7 +18,7 @@ class EstimateForm
       r.jita_average_price = self.jita_price.fetch(m.materialTypeID)
       r.jita_total_price = r.jita_average_price * r.require_count
       r.price = r.jita_average_price
-      r.total_price = m.quantity * 1.00 #TODO::price
+      r.total_price = m.quantity * r.price
       material_list << r
     end
     material_list
@@ -38,7 +38,7 @@ class EstimateForm
       .includes(:market)
       .where(station_id: 60003760, markets: {type_id: material.materialTypeID})
       .order(:price)
-      .limit(10)
+      .limit(15)
 
       #average
       average_price = 0

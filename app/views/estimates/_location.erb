@@ -41,12 +41,6 @@
 
 <script>
     $('#region_id').change(function () {
-        var region_id = $("#region_id").val();
-        $.ajax({
-            url: "set_location",
-            type: "GET",
-            datatype: "html",
-            data: 'id=region_id_change&region_id=' + region_id
-        });
+        set_location()
     });
 </script>

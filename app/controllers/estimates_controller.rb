@@ -33,7 +33,7 @@ class EstimatesController < ApplicationController
     @material_list = @estimate_form.get_material_list
     #session
     session[:estimate_form] = @estimate_form
-
+    session[:material_list] = @material_list
     respond_with(@estimate_form)
   end
 
@@ -71,8 +71,7 @@ class EstimatesController < ApplicationController
 
   def set_material
     #material
-    e = session[:estimate_form]
-    @material_list = e.get_material_list
+    @material_list = session[:material_list]
     @material_list.each_with_index do |m, i|
       @material_list[i].price = params["price_" + i.to_s]
       @material_list[i].total_price = params["price_" + i.to_s].to_f * @material_list[i].require_count.to_f
