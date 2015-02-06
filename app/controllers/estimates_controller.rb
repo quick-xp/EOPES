@@ -21,9 +21,11 @@ class EstimatesController < ApplicationController
   def new
     @estimate_form = EstimateForm.new
     @estimate_form.blueprint_type_id = session[:type_id]
+    #init
+    @estimate_form.runs = 1
     #blueprint
-    @estimate_form.blueprint_me = 0
-    @estimate_form.blueprint_te = 0
+    @estimate_form.blueprint_me = 10
+    @estimate_form.blueprint_te = 10
     #location
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = [["", ""]]
@@ -72,10 +74,22 @@ class EstimatesController < ApplicationController
   def set_material
     #material
     @material_list = session[:material_list]
+    @estimate_form = session[:estimate_form]
+    @estimate_form.blueprint_me = params["me"].to_i
+    @estimate_form.runs = params["runs"].to_i
     @material_list.each_with_index do |m, i|
+      #Re Calc Require Material
+      @material_list[i].require_count = EstimateMaterial.require_material(@estimate_form.runs,
+                                                                          @material_list[i].base_quantity,
+                                                                          @estimate_form.blueprint_me,
+                                                                          false)
       @material_list[i].price = params["price_" + i.to_s]
       @material_list[i].total_price = params["price_" + i.to_s].to_f * @material_list[i].require_count.to_f
     end
+
+    #session ReEntry
+    session[:material_list] = @material_list
+    session[:estimate_form] = @estimate_form
   end
 
   private

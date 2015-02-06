@@ -36,7 +36,7 @@
                 <div class="form-group">
                   <%= f.label :runs %>
                   <br>
-                  <%= f.number_field :runs, class: 'form-control' %>
+                  <%= f.number_field :runs, class: 'form-control', :value => 1 %>
                 </div>
               </form>
             </div>
@@ -116,3 +116,11 @@
   <%= link_to 'Back', :back %>
 </section>
 
+<script>
+    $('#estimate_form_blueprint_me').change(function () {
+        set_material(<%=@material_list.count()%>)
+    });
+    $('#estimate_form_runs').change(function () {
+        set_material(<%=@material_list.count()%>)
+    });
+</script>

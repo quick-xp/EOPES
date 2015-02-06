@@ -14,10 +14,11 @@ class EstimateForm
     materials.each do |m|
       r = EstimateMaterial.new
       r.type_id = m.materialTypeID
-      r.require_count = m.quantity
+      r.base_quantity = m.quantity
+      r.require_count = EstimateMaterial.require_material(self.runs,m.quantity,self.blueprint_me,false)
       r.jita_average_price = self.jita_price.fetch(m.materialTypeID)
       r.jita_total_price = r.jita_average_price * r.require_count
-      r.price = r.jita_average_price
+      r.price = r.jita_average_price.round(2)
       r.total_price = m.quantity * r.price
       material_list << r
     end
