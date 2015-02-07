@@ -31,6 +31,8 @@ GEM
       activesupport (= 4.0.2)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.3)
+    activerecord-import (0.7.0)
+      activerecord (>= 3.0)
     activerecord-session_store (0.1.0)
       actionpack (>= 4.0.0, < 5)
       activerecord (>= 4.0.0, < 5)
@@ -236,6 +238,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-import
   activerecord-session_store
   adminlte-rails
   capybara (~> 2.4.3)

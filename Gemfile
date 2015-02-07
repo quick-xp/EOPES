@@ -46,6 +46,8 @@ gem 'dotenv-rails'
 gem 'activerecord-session_store'
 #rest client
 gem "rest-client"
+#bulk insert
+gem "activerecord-import"
 
 group :development, :test do
   gem "rspec-rails", "~> 3.1.0"

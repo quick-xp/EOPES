@@ -15,6 +15,7 @@ module EOPES
   class Application < Rails::Application
     config.autoload_paths +=%W(#{config.root}/app/models/master)
     config.autoload_paths +=%W(#{config.root}/app/models/form)
+    config.autoload_paths +=%W(#{config.root}/lib)
     config.generators do |g|
       g.test_framework :rspec,
                        fixtures: true,
