@@ -24,10 +24,10 @@ class ApplicationController < ActionController::Base
                                :client_id => ENV['EVE_ONLINE_APP_ID'],
                                :client_secret => ENV['EVE_ONLINE_APP_SECRET']
 
-    refresh_hash = JSON.parse(response.body)
-    session[:access_token] = refresh_hash[:access_token]
-    session[:expires_at] = DateTime.current.to_i + refresh_hash["expires_in"].to_i
-    session[:refresh_token] = refresh_hash[:refresh_token]
+    refresh_hash = JSON.parse(response)
+    session[:access_token] = refresh_hash['access_token']
+    session[:expires_at] = DateTime.current.to_i + refresh_hash['expires_in'].to_i
+    session[:refresh_token] = refresh_hash['refresh_token']
   end
 
   def token_expired?

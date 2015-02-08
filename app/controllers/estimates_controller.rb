@@ -26,13 +26,15 @@ class EstimatesController < ApplicationController
     #blueprint
     @estimate_form.blueprint_me = 10
     @estimate_form.blueprint_te = 10
-    #location
-    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
-    @solar_system_list = [["", ""]]
     #jita price
     @estimate_form.get_jita_price(get_token)
     #material
     @material_list = @estimate_form.get_material_list
+    #location
+    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @solar_system_list = [["", ""]]
+    #location Job Cost 計算
+    @estimate_form.re_calc_job_cost!(@material_list)
     #session
     session[:estimate_form] = @estimate_form
     session[:material_list] = @material_list
@@ -64,17 +66,34 @@ class EstimatesController < ApplicationController
   end
 
   def set_location
-    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @estimate_form = session[:estimate_form]
+    @material_list = session[:material_list]
+
+    # select value setting
     @region_id = params[:region_id]
+    @solar_system_id = params[:solar_system_id]
+
+    #region_list and solar_system_list
+    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = MapSolarSystem.where(:regionID => @region_id)
     .order(:solarSystemName)
     .map { |list| [list.solarSystemName, list.solarSystemID] }
+
+    #Re Set Location
+    @estimate_form.region_id = @region_id
+    @estimate_form.solar_system_id = @solar_system_id
+
+    #Cost Re Calc
+    @estimate_form.re_calc_job_cost!(@material_list)
+
+    #session ReEntry
+    session[:estimate_form] = @estimate_form
   end
 
   def set_material
     #material
     @material_list = session[:material_list]
-    @estimate_form = session[:estimate_form]
+    estimate_form = session[:estimate_form]
     @estimate_form.blueprint_me = params["me"].to_i
     @estimate_form.runs = params["runs"].to_i
     @material_list.each_with_index do |m, i|

@@ -10,9 +10,10 @@
     </div>
     <div class="form-group">
       <label>System Cost Index</label> :
-      1.05 %
+      <%= @estimate_form.system_cost_index %>
       <div class="progress sm progress-striped active">
-        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+             aria-valuemin="0" aria-valuemax="100" style="width: <%= @estimate_form.system_cost_index * 100%>%">
           <span class="sr-only">20% Complete</span>
         </div>
       </div>
@@ -27,16 +28,32 @@
         </tr>
         <tr>
           <td>
-            10,000 isk
+            <%= number_to_currency(@estimate_form.base_job_cost,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
           </td>
           <td>
-            10,000 isk
+            <%= number_to_currency(@estimate_form.job_fee,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
           </td>
           <td>
-            10,000 isk
+            <%= number_to_currency(@estimate_form.facility_cost,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
           </td>
           <td>
-            10,000 isk
+            <%= number_to_currency(@estimate_form.total_job_cost,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
           </td>
         </tr>
       </table>
@@ -47,5 +64,8 @@
 <script>
     $('#region_id').change(function () {
         set_location()
+    });
+    $('#solar_system_id').change(function () {
+        set_location();
     });
 </script>

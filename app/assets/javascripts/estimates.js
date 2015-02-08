@@ -17,10 +17,11 @@ function set_material(material_count) {
 
 function set_location() {
     var region_id = $("#region_id").val();
+    var solar_system_id = $("#solar_system_id").val();
     $.ajax({
         url: "set_location",
         type: "GET",
         datatype: "html",
-        data: 'id=region_id_change&region_id=' + region_id
+        data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
     });
 }

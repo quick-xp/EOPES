@@ -1,6 +1,6 @@
 class EstimateMaterial < ActiveRecord::Base
   attr_accessor :base_quantity
-
+  attr_accessor :adjusted_price
   #material require = max(runs,ceil(round(runs * baseQuantity * materialModifier,2))
   #materialModifire = ME * FacilityModifier
   #FacilityModifire = NPC_STATION:1.0,POS:0.98
