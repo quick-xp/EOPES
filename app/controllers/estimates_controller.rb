@@ -93,7 +93,7 @@ class EstimatesController < ApplicationController
   def set_material
     #material
     @material_list = session[:material_list]
-    estimate_form = session[:estimate_form]
+    @estimate_form = session[:estimate_form]
     @estimate_form.blueprint_me = params["me"].to_i
     @estimate_form.runs = params["runs"].to_i
     @material_list.each_with_index do |m, i|
