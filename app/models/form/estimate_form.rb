@@ -7,6 +7,8 @@ class EstimateForm
   attr_accessor :system_cost_index, :base_job_cost,:job_fee, :facility_cost, :total_job_cost
   attr_accessor :user_id
   attr_accessor :jita_price
+  attr_accessor :product_type_id
+  attr_accessor :total_cost,:sell_total_price,:material_total_cost,:profit
 
   def get_material_list
     material_list = Array.new
@@ -20,6 +22,8 @@ class EstimateForm
       r.adjusted_price = MarketPrice.where(:type_id => r.type_id).first.adjusted_price
       r.jita_average_price = self.jita_price.fetch(m.materialTypeID)
       r.jita_total_price = r.jita_average_price * r.require_count
+      r.universe_average_price = MarketPrice.where(:type_id => r.type_id).first.average_price
+      r.universe_total_price = r.universe_average_price * r.require_count
       r.price = r.jita_average_price.round(2)
       r.total_price = m.quantity * r.price
       material_list << r
@@ -27,7 +31,7 @@ class EstimateForm
     material_list
   end
 
-  def get_jita_price(access_token)
+  def get_jita_price!(access_token)
     #材料一覧取得
     material_list = Array.new
     materials = IndustryActivityMaterial.where(:typeID => self.blueprint_type_id, :activityID => 1)
@@ -105,6 +109,28 @@ class EstimateForm
 
     #TotalJobInstallCost設定
     self.total_job_cost = get_total_job_cost
+  end
+
+  #Total Estimate Result 再計算
+  def set_total_price!(material_list)
+    #sell total count
+    product_quantity = IndustryActivityProduct.where(:typeID => self.blueprint_type_id,:activityID => 1).first
+    self.sell_count = product_quantity.quantity * self.runs
+
+    #Sell Total Price
+    self.sell_total_price = self.sell_count * self.sell_price
+
+    #material total cost
+    self.material_total_cost = 0.0
+    material_list.each do |m|
+      self.material_total_cost += m.total_price
+    end
+
+    #Total Cost
+    self.total_cost = self.total_job_cost + material_total_cost
+
+    #Profit
+    self.profit = self.sell_total_price.to_f - self.total_cost.to_f
   end
 
   #BaseJobCost計算

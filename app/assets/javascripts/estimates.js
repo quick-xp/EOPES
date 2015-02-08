@@ -25,3 +25,13 @@ function set_location() {
         data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
     });
 }
+
+function set_result() {
+    var sell_price = $("#estimate_sell_price").val();
+    $.ajax({
+        url: "set_result",
+        type: "GET",
+        datatype: "html",
+        data: 'id=set_result&sell_price=' + sell_price
+    });
+}

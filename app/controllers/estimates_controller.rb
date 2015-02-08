@@ -21,20 +21,32 @@ class EstimatesController < ApplicationController
   def new
     @estimate_form = EstimateForm.new
     @estimate_form.blueprint_type_id = session[:type_id]
+
     #init
     @estimate_form.runs = 1
+
     #blueprint
     @estimate_form.blueprint_me = 10
     @estimate_form.blueprint_te = 10
+
     #jita price
-    @estimate_form.get_jita_price(get_token)
+    @estimate_form.get_jita_price!(get_token)
+
     #material
     @material_list = @estimate_form.get_material_list
+
     #location
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = [["", ""]]
+
     #location Job Cost 計算
     @estimate_form.re_calc_job_cost!(@material_list)
+
+    #Product Sell Price
+    @estimate_form.sell_price = 1.0
+
+    #Total Estimate Result
+    @estimate_form.set_total_price!(@material_list)
     #session
     session[:estimate_form] = @estimate_form
     session[:material_list] = @material_list
@@ -105,6 +117,20 @@ class EstimatesController < ApplicationController
       @material_list[i].price = params["price_" + i.to_s]
       @material_list[i].total_price = params["price_" + i.to_s].to_f * @material_list[i].require_count.to_f
     end
+
+    #session ReEntry
+    session[:material_list] = @material_list
+    session[:estimate_form] = @estimate_form
+  end
+
+  def set_result
+    #Get Session
+    @material_list = session[:material_list]
+    @estimate_form = session[:estimate_form]
+    @estimate_form.sell_price = params["sell_price"].to_f
+
+    #Calc Total Price
+    @estimate_form.set_total_price!(@material_list)
 
     #session ReEntry
     session[:material_list] = @material_list

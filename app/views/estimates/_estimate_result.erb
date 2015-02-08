@@ -1,0 +1,101 @@
+<div class="box-body">
+  <form role="form">
+    <div class="form-group">
+      <label>Sell Price</label>
+      <%= text_field :estimate, :sell_price, class: 'form-control', value: @estimate_form.sell_price %>
+    </div>
+    <div class="form-group">
+      <label>Product Quantity</label> :
+      <%= @estimate_form.sell_count %>
+    </div>
+    <div class="box-body no-padding">
+      <table class="table table-condensed">
+        <tr>
+          <th style="width: 20%">Result</th>
+          <th style="width: 30%"></th>
+          <th style="width: 30%"></th>
+          <th style="width: 20%"></th>
+        </tr>
+        <tr>
+          <td>
+            Sell Price Total
+          </td>
+          <td></td>
+          <td>
+            <%= number_to_currency(@estimate_form.sell_total_price,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Costs
+          </td>
+          <td></td>
+          <td>
+            <%= number_to_currency(@estimate_form.total_cost,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+          </td>
+          <td>
+            Job Install Cost
+          </td>
+          <td>
+          </td>
+          <td>
+            <%= number_to_currency(@estimate_form.total_job_cost,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          </td>
+          <td>
+            Material Total Cost
+          </td>
+          <td>
+          </td>
+          <td>
+            <%= number_to_currency(@estimate_form.material_total_cost,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Profit
+          </td>
+          <td></td>
+          <td>
+            <%= number_to_currency(@estimate_form.profit,
+                                   :precision => 2,
+                                   :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</div>
+<script>
+    $('#estimate_sell_price').change(function () {
+        set_result();
+    });
+</script>

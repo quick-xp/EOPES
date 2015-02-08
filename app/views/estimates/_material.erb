@@ -6,9 +6,7 @@
       <th>Material</th>
       <th>Require</th>
       <th>Jita Average</th>
-      <th>Jita Total</th>
       <th>Universe Average</th>
-      <th>Universe Total</th>
       <th>Price</th>
       <th>Price total</th>
     </tr>
@@ -31,21 +29,7 @@
                                    :format => "%n %u") %>
           </td>
           <td>
-            <%= number_to_currency(material.jita_total_price,
-                                   :precision => 2,
-                                   :unit => "isk",
-                                   :separator => ",",
-                                   :format => "%n %u") %>
-          </td>
-          <td>
             <%= number_to_currency(material.universe_average_price,
-                                   :precision => 2,
-                                   :unit => "isk",
-                                   :separator => ",",
-                                   :format => "%n %u") %>
-          </td>
-          <td>
-            <%= number_to_currency(material.universe_total_price,
                                    :precision => 2,
                                    :unit => "isk",
                                    :separator => ",",
@@ -70,5 +54,6 @@
 <script>
     $("input[id*='price_").change(function () {
         set_material(<%= @material_list.count() %>)
+        set_result()
     });
 </script>

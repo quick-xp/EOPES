@@ -5,6 +5,7 @@ EOPES::Application.routes.draw do
       post "select_new"
       get "set_location"
       get "set_material"
+      get "set_result"
     end
   end
 
