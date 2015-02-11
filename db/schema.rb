@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211134058) do
+ActiveRecord::Schema.define(version: 20150211145140) do
 
   create_table "estimate_blueprints", force: true do |t|
     t.integer  "type_id"
@@ -24,6 +24,21 @@ ActiveRecord::Schema.define(version: 20150211134058) do
   end
 
   add_index "estimate_blueprints", ["estimate_id"], name: "index_estimate_blueprints_on_estimate_id", using: :btree
+
+  create_table "estimate_job_costs", force: true do |t|
+    t.integer  "region_id"
+    t.integer  "solar_system_id"
+    t.decimal  "system_cost_index", precision: 20, scale: 16
+    t.decimal  "base_job_cost",     precision: 20, scale: 4
+    t.decimal  "job_fee",           precision: 20, scale: 4
+    t.decimal  "facility_cost",     precision: 20, scale: 4
+    t.decimal  "total_job_cost",    precision: 20, scale: 4
+    t.integer  "estimate_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "estimate_job_costs", ["estimate_id"], name: "index_estimate_job_costs_on_estimate_id", using: :btree
 
   create_table "estimate_materials", force: true do |t|
     t.integer  "type_id"

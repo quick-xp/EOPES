@@ -39,8 +39,10 @@ class EstimatesController < ApplicationController
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = [["", ""]]
 
-    #location Job Cost 計算
-    @estimate_form.re_calc_job_cost!(@material_list)
+    #Job Cost 計算
+    @estimate_job_cost = EstimateJobCost.new
+    @estimate_job_cost.re_calc_job_cost!(@material_list)
+    @estimate_form.estimate_job_cost = @estimate_job_cost
 
     #Product Setting
     @estimate_form.product_type_id =
@@ -98,6 +100,9 @@ class EstimatesController < ApplicationController
     #見積詳細情報(Blueprint)を設定
     @estimate.estimate_blueprint = @estimate_form.estimate_blueprint
 
+    #見積詳細情報(JobCost)を設定
+    @estimate.estimate_job_cost = @estimate_form.estimate_job_cost
+
     @estimate.save
     respond_with(@estimate)
   end
@@ -127,11 +132,11 @@ class EstimatesController < ApplicationController
     .map { |list| [list.solarSystemName, list.solarSystemID] }
 
     #Re Set Location
-    @estimate_form.region_id = @region_id
-    @estimate_form.solar_system_id = @solar_system_id
+    @estimate_form.estimate_job_cost.region_id = @region_id
+    @estimate_form.estimate_job_cost.solar_system_id = @solar_system_id
 
     #Cost Re Calc
-    @estimate_form.re_calc_job_cost!(@material_list)
+    @estimate_form.estimate_job_cost.re_calc_job_cost!(@material_list)
 
     #session ReEntry
     session[:estimate_form] = @estimate_form
