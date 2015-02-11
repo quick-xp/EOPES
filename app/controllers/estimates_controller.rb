@@ -135,6 +135,7 @@ class EstimatesController < ApplicationController
                                                                           false)
       @material_list[i].price = params["price_" + i.to_s]
       @material_list[i].total_price = params["price_" + i.to_s].to_f * @material_list[i].require_count.to_f
+      @material_list[i].total_volume = @material_list[i].require_count * @material_list[i].volume
     end
 
     #session ReEntry

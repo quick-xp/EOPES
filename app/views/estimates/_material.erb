@@ -7,6 +7,7 @@
       <th>Require</th>
       <th>Jita Average</th>
       <th>Universe Average</th>
+      <th>Volume</th>
       <th>Price</th>
       <th>Price total</th>
     </tr>
@@ -32,6 +33,13 @@
             <%= number_to_currency(material.universe_average_price,
                                    :precision => 2,
                                    :unit => "isk",
+                                   :separator => ",",
+                                   :format => "%n %u") %>
+          </td>
+          <td>
+            <%= number_to_currency(material.total_volume,
+                                   :precision => 2,
+                                   :unit => "㎥",
                                    :separator => ",",
                                    :format => "%n %u") %>
           </td>

@@ -9,6 +9,7 @@ class EstimateForm
   attr_accessor :jita_price
   attr_accessor :product_type_id
   attr_accessor :total_cost,:sell_total_price,:material_total_cost,:profit
+  attr_accessor :total_volume
 
   def get_material_list
     material_list = Array.new
@@ -24,6 +25,8 @@ class EstimateForm
       r.jita_total_price = r.jita_average_price * r.require_count
       r.universe_average_price = MarketPrice.where(:type_id => r.type_id).first.average_price
       r.universe_total_price = r.universe_average_price * r.require_count
+      r.volume = InvType.get_type_volume(m.materialTypeID)
+      r.total_volume = r.volume * m.quantity
       r.price = r.jita_average_price.round(2)
       r.total_price = m.quantity * r.price
       material_list << r
@@ -154,6 +157,9 @@ class EstimateForm
     #sell total count
     product_quantity = IndustryActivityProduct.where(:typeID => self.blueprint_type_id,:activityID => 1).first
     self.sell_count = product_quantity.quantity * self.runs
+
+    #Total Volume
+    self.total_volume = self.sell_count * InvType.get_type_volume(self.product_type_id)
 
     #Sell Total Price
     self.sell_total_price = self.sell_count * self.sell_price
