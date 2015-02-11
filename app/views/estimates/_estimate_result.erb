@@ -4,10 +4,29 @@
       <label>Sell Price</label>
       <%= text_field :estimate, :sell_price, class: 'form-control', value: @estimate_form.sell_price %>
     </div>
-    <div class="form-group">
-      <label>Product Quantity</label> :
-      <%= @estimate_form.sell_count %>
+    <div class="box-body no-padding">
+      <table class="table table-condensed">
+        <tr>
+          <th style="width: 40px">#</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Volume</th>
+        </tr>
+        <tr>
+          <td>
+            <%= image_tag("https://image.eveonline.com/Type/#{@estimate_form.product_type_id}_32.png",
+                          :alt => "Type Image") %>
+          </td>
+          <td>
+            <%= InvType.get_type_name(@estimate_form.product_type_id) %>
+          </td>
+          <td>
+            <%= @estimate_form.sell_count %>
+          </td>
+        </tr>
+      </table>
     </div>
+    <br/>
     <div class="box-body no-padding">
       <table class="table table-condensed">
         <tr>
