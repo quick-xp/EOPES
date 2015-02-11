@@ -45,26 +45,21 @@ class EstimatesController < ApplicationController
     @estimate_form.estimate_job_cost = @estimate_job_cost
 
     #Product Setting
-    @estimate_form.product_type_id =
-        IndustryActivityProduct
-        .where(:typeID => @estimate_form.estimate_blueprint.type_id, :activityID => 1)
-        .first
-        .productTypeID
+    @estimate_form.product_type_id = @estimate_blueprint.get_product_type_id
 
     #market sell order
     #Default は The Forge
     @sell_region_id = 10000002
     @product_market_list = @estimate_form.get_market_data(get_token, @sell_region_id, @estimate_form.product_type_id)
 
-    #Product Sell Price
-    @estimate_form.sell_price =
-        @estimate_form.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
-
     #Product Sell Order Average
     @product_region_sell_price_average =
-        @estimate_form.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
+        MarketDetail.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
     @product_universe_sell_price_average =
-        @estimate_form.get_universe_average_price(@estimate_form.product_type_id)
+        MarketPrice.get_universe_average_price(@estimate_form.product_type_id)
+
+    #Product Sell Price
+    @estimate_form.sell_price = @product_region_sell_price_average
 
     #Total Estimate Result
     @estimate_form.set_total_price!(@material_list)
@@ -194,9 +189,9 @@ class EstimatesController < ApplicationController
 
     #Product Sell Order Average
     @product_region_sell_price_average =
-        @estimate_form.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
+        MarketDetail.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
     @product_universe_sell_price_average =
-        @estimate_form.get_universe_average_price(@estimate_form.product_type_id)
+        MarketPrice.get_universe_average_price(@estimate_form.product_type_id)
   end
 
   private
