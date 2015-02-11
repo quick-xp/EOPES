@@ -35,3 +35,13 @@ function set_result() {
         data: 'id=set_result&sell_price=' + sell_price
     });
 }
+
+function set_sell_market_list() {
+    var region_id = $("#sell_region_id").val();
+    $.ajax({
+        url: "set_sell_market_list",
+        type: "GET",
+        datatype: "html",
+        data: 'id=set_sell_market_list&sell_region_id=' + region_id
+    });
+}

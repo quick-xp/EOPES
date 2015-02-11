@@ -1,56 +1,63 @@
 <div class="box-body">
   <form role="form">
-    <div class="box-body no-padding">
-      <table class="table table-condensed">
-        <tr>
-          <th style="width: 20%">price</th>
-          <th style="width: 30%">volume</th>
-          <th style="width: 30%">location</th>
-          <th style="width: 20%">duration</th>
-        </tr>
-        <tr>
-            <td>
-                1000 isk
-            </td>
-            <td>
-                555
-            </td>
-            <td>
-                jita
-            </td>
-            <td>
-                2014/01/01 12:00
-            </td>
-        </tr>
-        <tr>
-          <td>
-            1000 isk
-          </td>
-          <td>
-            555
-          </td>
-          <td>
-            jita
-          </td>
-          <td>
-            2014/01/01 12:00
-          </td>
-        </tr>
-        <tr>
-          <td>
-            1000 isk
-          </td>
-          <td>
-            555
-          </td>
-          <td>
-            jita
-          </td>
-          <td>
-            2014/01/01 12:00
-          </td>
-        </tr>
-      </table>
+    <div class="form-group">
+      <label>Sell Region</label>
+      <%= select_tag :sell_region_id, options_for_select(@region_list, "10000002"), class: 'form-control' %>
     </div>
+    <div class="form-group">
+      <label>region average price</label> :
+      <%= number_to_currency(@product_region_sell_price_average,
+                             :precision => 2,
+                             :unit => "isk",
+                             :separator => ",",
+                             :format => "%n %u") %>
+    </div>
+    <div class="form-group">
+      <label>universe average price</label> :
+      <%= number_to_currency(@product_universe_sell_price_average,
+                             :precision => 2,
+                             :unit => "isk",
+                             :separator => ",",
+                             :format => "%n %u") %>
+    </div>
+
+    <h4 class="box-title">Market Sell Order</h4>
+
+      <div class="box-body no-padding">
+        <table class="table table-condensed">
+          <tr>
+            <th style="width: 20%">price</th>
+            <th style="width: 20%">volume</th>
+            <th style="width: 50%">location</th>
+            <th style="width: 10%">duration</th>
+          </tr>
+          <% @product_market_list.each do |market| %>
+              <tr>
+                <td>
+                  <%= number_to_currency(market.price,
+                                         :precision => 2,
+                                         :unit => "isk",
+                                         :separator => ",",
+                                         :format => "%n %u") %>
+                </td>
+                <td>
+                  <%= number_with_delimiter(market.volume) %>
+                </td>
+                <td>
+                  <%= market.get_station_name %>
+                </td>
+                <td>
+                  <%= market.duration %>
+                </td>
+              </tr>
+          <% end %>
+        </table>
+      </div>
   </form>
 </div>
+
+<script>
+    $('#sell_region_id').change(function () {
+        set_sell_market_list()
+    });
+</script>

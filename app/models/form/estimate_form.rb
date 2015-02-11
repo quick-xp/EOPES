@@ -40,7 +40,7 @@ class EstimateForm
     materials.each do |material|
       #マーケットデータリフレッシュ(The Forge)
       Market.refresh_market(10000002, material.materialTypeID, access_token)
-      #Jita Top 10 low Price
+      #Jita Top 15 low Price
       market_details = MarketDetail
       .includes(:market)
       .where(station_id: 60003760, markets: {type_id: material.materialTypeID})
@@ -60,6 +60,44 @@ class EstimateForm
     self.jita_price = jita_price
   end
 
+  #Market Data 一覧取得
+  #Price が 安いもののTop10 を取得する
+  def get_market_data(access_token,region_id,type_id)
+    #マーケットデータリフレッシュ
+    Market.refresh_market(region_id,type_id,access_token)
+    MarketDetail
+    .includes(:market)
+    .where(markets: {type_id: type_id,region_id: region_id})
+    .order(:price)
+    .limit(10)
+  end
+
+  #Item の Region 平均価格を取得する
+  #平均とは マーケットデータのTop 15 の価格の平均と定義する
+  def get_region_average_price(region_id,type_id)
+    market_details = MarketDetail
+    .includes(:market)
+    .where(markets: {type_id: type_id,region_id: region_id})
+    .order(:price)
+    .limit(15)
+
+    #average
+    sum = 0.0
+    market_details.each do |v|
+      sum += v.price
+    end
+    (sum / market_details.size).round(2)
+  end
+
+  #Item の Universe 平均価格を取得する
+  def get_universe_average_price(type_id)
+    price = MarketPrice.where(:type_id => type_id).first
+    if price.nil?
+      price = 0.0
+    else
+      price.average_price
+    end
+  end
   #region_id,solar_system_idどちらも指定されていない場合は全Cost_Indexの平均を
   #region_idのみ指定の場合は、Region内のCost_Indexの平均を
   #solar_system_idまで指定している場合はSolarSystemのCost_Indexを取得する

@@ -42,8 +42,27 @@ class EstimatesController < ApplicationController
     #location Job Cost 計算
     @estimate_form.re_calc_job_cost!(@material_list)
 
+    #Product Setting
+    @estimate_form.product_type_id =
+        IndustryActivityProduct
+        .where(:typeID => @estimate_form.blueprint_type_id, :activityID => 1)
+        .first
+        .productTypeID
+
+    #market sell order
+    #Default は The Forge
+    @sell_region_id = 10000002
+    @product_market_list = @estimate_form.get_market_data(get_token, @sell_region_id, @estimate_form.product_type_id)
+
     #Product Sell Price
-    @estimate_form.sell_price = 1.0
+    @estimate_form.sell_price =
+        @estimate_form.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
+
+    #Product Sell Order Average
+    @product_region_sell_price_average =
+        @estimate_form.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
+    @product_universe_sell_price_average =
+        @estimate_form.get_universe_average_price(@estimate_form.product_type_id)
 
     #Total Estimate Result
     @estimate_form.set_total_price!(@material_list)
@@ -135,6 +154,27 @@ class EstimatesController < ApplicationController
     #session ReEntry
     session[:material_list] = @material_list
     session[:estimate_form] = @estimate_form
+  end
+
+  #Sell Market List
+  def set_sell_market_list
+    #Get Session
+    @estimate_form = session[:estimate_form]
+
+    # select value setting
+    @sell_region_id = params[:sell_region_id]
+
+    #region_list
+    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+
+    #market sell order
+    @product_market_list = @estimate_form.get_market_data(get_token, @sell_region_id, @estimate_form.product_type_id)
+
+    #Product Sell Order Average
+    @product_region_sell_price_average =
+        @estimate_form.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
+    @product_universe_sell_price_average =
+        @estimate_form.get_universe_average_price(@estimate_form.product_type_id)
   end
 
   private
