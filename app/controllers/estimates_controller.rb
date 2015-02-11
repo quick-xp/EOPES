@@ -81,7 +81,20 @@ class EstimatesController < ApplicationController
   end
 
   def create
-    @estimate = Estimate.new(estimate_params)
+    #Get Session
+    @material_list = session[:material_list]
+    @estimate_form = session[:estimate_form]
+
+    #見積基本情報を設定
+    @estimate = Estimate.new
+    @estimate.type_id = @estimate_form.product_type_id
+    @estimate.user_id = get_current_user_id
+
+    #見積詳細情報(Material)を設定
+    @material_list.each do |material|
+      @estimate.estimate_materials << material
+    end
+
     @estimate.save
     respond_with(@estimate)
   end

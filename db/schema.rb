@@ -22,9 +22,12 @@ ActiveRecord::Schema.define(version: 20150207053031) do
     t.decimal  "jita_average_price",     precision: 20, scale: 4
     t.decimal  "universe_total_price",   precision: 20, scale: 4
     t.decimal  "universe_average_price", precision: 20, scale: 4
+    t.integer  "estimate_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "estimate_materials", ["estimate_id"], name: "index_estimate_materials_on_estimate_id", using: :btree
 
   create_table "estimates", force: true do |t|
     t.integer  "type_id"

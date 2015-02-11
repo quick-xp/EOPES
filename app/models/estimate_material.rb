@@ -1,4 +1,5 @@
 class EstimateMaterial < ActiveRecord::Base
+  belongs_to :estimate
   attr_accessor :base_quantity
   attr_accessor :adjusted_price
   attr_accessor :volume,:total_volume

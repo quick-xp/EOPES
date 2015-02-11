@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
     OAuth2::AccessToken.new(client, token)
   end
 
+  def get_current_user_id
+    session[:user_id]
+  end
+
   def refresh_token
     response = RestClient.post "https://login.eveonline.com/oauth/token",
                                :grant_type => 'refresh_token',
