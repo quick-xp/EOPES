@@ -25,6 +25,11 @@
             </div>
             <div class="box-body">
               <form role="form">
+                <%= image_tag("https://image.eveonline.com/Type/#{@estimate_form.blueprint_type_id}_32.png",
+                              :alt => "Type Image") %>
+                <%= InvType.get_type_name(@estimate_form.blueprint_type_id) %>
+                <br/>
+                <br/>
                 <div class="form-group">
                   <label>Select Blueprint</label>
                   <select class="form-control">
