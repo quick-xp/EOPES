@@ -12,6 +12,8 @@ function set_material(material_count) {
         type: "GET",
         datatype: "html",
         data: data
+    }).done(function(){
+        set_result();
     });
 }
 
@@ -23,6 +25,8 @@ function set_location() {
         type: "GET",
         datatype: "html",
         data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
+    }).done(function(){
+        set_result();
     });
 }
 

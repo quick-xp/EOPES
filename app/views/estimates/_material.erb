@@ -53,7 +53,6 @@
 
 <script>
     $("input[id*='price_").change(function () {
-        set_material(<%= @material_list.count() %>)
-        set_result()
+        set_material(<%= @material_list.count() %>);
     });
 </script>
