@@ -1,8 +1,8 @@
 function set_material(material_count) {
     var count = material_count
     var data = "id=price_change";
-    var me = $('#estimate_form_blueprint_me').val();
-    var runs = $('#estimate_form_runs').val();
+    var me = $('#estimate_form_estimate_blueprints_me').val();
+    var runs = $('#estimate_form_estimate_blueprints_runs').val();
     data += "&data_count=" + count;
     for (var i = 0; i < count; i++) {
         data += "&price_" + i + "=" + $("#price_" + i).val() + "&me=" + me + "&runs=" + runs;

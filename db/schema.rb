@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150207053031) do
+ActiveRecord::Schema.define(version: 20150211134058) do
+
+  create_table "estimate_blueprints", force: true do |t|
+    t.integer  "type_id"
+    t.integer  "me"
+    t.integer  "te"
+    t.integer  "runs"
+    t.integer  "estimate_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "estimate_blueprints", ["estimate_id"], name: "index_estimate_blueprints_on_estimate_id", using: :btree
 
   create_table "estimate_materials", force: true do |t|
     t.integer  "type_id"

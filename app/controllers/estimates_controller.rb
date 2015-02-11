@@ -20,14 +20,14 @@ class EstimatesController < ApplicationController
 
   def new
     @estimate_form = EstimateForm.new
-    @estimate_form.blueprint_type_id = session[:type_id]
-
-    #init
-    @estimate_form.runs = 1
 
     #blueprint
-    @estimate_form.blueprint_me = 10
-    @estimate_form.blueprint_te = 10
+    @estimate_blueprint = EstimateBlueprint.new
+    @estimate_blueprint.type_id = session[:type_id]
+    @estimate_blueprint.runs = 1
+    @estimate_blueprint.me = 10
+    @estimate_blueprint.te = 10
+    @estimate_form.estimate_blueprint = @estimate_blueprint
 
     #jita price
     @estimate_form.get_jita_price!(get_token)
@@ -45,7 +45,7 @@ class EstimatesController < ApplicationController
     #Product Setting
     @estimate_form.product_type_id =
         IndustryActivityProduct
-        .where(:typeID => @estimate_form.blueprint_type_id, :activityID => 1)
+        .where(:typeID => @estimate_form.estimate_blueprint.type_id, :activityID => 1)
         .first
         .productTypeID
 
@@ -95,6 +95,9 @@ class EstimatesController < ApplicationController
       @estimate.estimate_materials << material
     end
 
+    #見積詳細情報(Blueprint)を設定
+    @estimate.estimate_blueprint = @estimate_form.estimate_blueprint
+
     @estimate.save
     respond_with(@estimate)
   end
@@ -138,13 +141,13 @@ class EstimatesController < ApplicationController
     #material
     @material_list = session[:material_list]
     @estimate_form = session[:estimate_form]
-    @estimate_form.blueprint_me = params["me"].to_i
-    @estimate_form.runs = params["runs"].to_i
+    @estimate_form.estimate_blueprint.me = params["me"].to_i
+    @estimate_form.estimate_blueprint.runs = params["runs"].to_i
     @material_list.each_with_index do |m, i|
       #Re Calc Require Material
-      @material_list[i].require_count = EstimateMaterial.require_material(@estimate_form.runs,
+      @material_list[i].require_count = EstimateMaterial.require_material(@estimate_form.estimate_blueprint.runs,
                                                                           @material_list[i].base_quantity,
-                                                                          @estimate_form.blueprint_me,
+                                                                          @estimate_form.estimate_blueprint.me,
                                                                           false)
       @material_list[i].price = params["price_" + i.to_s]
       @material_list[i].total_price = params["price_" + i.to_s].to_f * @material_list[i].require_count.to_f
