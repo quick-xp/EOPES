@@ -87,8 +87,7 @@ class EstimatesController < ApplicationController
     @estimate_form = session[:estimate_form]
 
     #見積基本情報を設定
-    @estimate = Estimate.new
-    @estimate.type_id = @estimate_form.product_type_id
+    @estimate = @estimate_form.estimate
     @estimate.user_id = get_current_user_id
 
     #見積詳細情報(Material)を設定
