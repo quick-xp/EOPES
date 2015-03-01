@@ -9,6 +9,7 @@ class CreateEstimateMaterials < ActiveRecord::Migration
       t.decimal :jita_average_price, :precision => 20, :scale => 4
       t.decimal :universe_total_price, :precision => 20, :scale => 4
       t.decimal :universe_average_price, :precision => 20, :scale => 4
+      t.decimal :total_volume, :precision => 20, :scale => 4
 
       t.references :estimate, index: true
       t.timestamps

@@ -44,22 +44,26 @@ class EstimatesController < ApplicationController
     @estimate_job_cost.re_calc_job_cost!(@material_list)
     @estimate_form.estimate_job_cost = @estimate_job_cost
 
+    #Estimate
+    @estimate_form.estimate = Estimate.new
     #Product Setting
-    @estimate_form.product_type_id = @estimate_blueprint.get_product_type_id
+    @estimate_form.estimate.product_type_id = @estimate_blueprint.get_product_type_id
 
     #market sell order
     #Default は The Forge
     @sell_region_id = 10000002
-    @product_market_list = @estimate_form.get_market_data(get_token, @sell_region_id, @estimate_form.product_type_id)
+    @product_market_list = @estimate_form.get_market_data(get_token,
+                                                          @sell_region_id,
+                                                          @estimate_form.estimate.product_type_id)
 
     #Product Sell Order Average
     @product_region_sell_price_average =
-        MarketDetail.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
+        MarketDetail.get_region_average_price(@sell_region_id, @estimate_form.estimate.product_type_id)
     @product_universe_sell_price_average =
-        MarketPrice.get_universe_average_price(@estimate_form.product_type_id)
+        MarketPrice.get_universe_average_price(@estimate_form.estimate.product_type_id)
 
     #Product Sell Price
-    @estimate_form.sell_price = @product_region_sell_price_average
+    @estimate_form.estimate.sell_price = @product_region_sell_price_average
 
     #Total Estimate Result
     @estimate_form.set_total_price!(@material_list)
@@ -163,7 +167,7 @@ class EstimatesController < ApplicationController
     #Get Session
     @material_list = session[:material_list]
     @estimate_form = session[:estimate_form]
-    @estimate_form.sell_price = params["sell_price"].to_f
+    @estimate_form.estimate.sell_price = params["sell_price"].to_f
 
     #Calc Total Price
     @estimate_form.set_total_price!(@material_list)

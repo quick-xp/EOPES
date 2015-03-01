@@ -2,7 +2,7 @@
   <form role="form">
     <div class="form-group">
       <label>Sell Price</label>
-      <%= text_field :estimate, :sell_price, class: 'form-control', value: @estimate_form.sell_price %>
+      <%= text_field :estimate, :sell_price, class: 'form-control', value: @estimate_form.estimate.sell_price %>
     </div>
     <div class="box-body no-padding">
       <table class="table table-condensed">
@@ -14,17 +14,17 @@
         </tr>
         <tr>
           <td>
-            <%= image_tag("https://image.eveonline.com/Type/#{@estimate_form.product_type_id}_32.png",
+            <%= image_tag("https://image.eveonline.com/Type/#{@estimate_form.estimate.product_type_id}_32.png",
                           :alt => "Type Image") %>
           </td>
           <td>
-            <%= InvType.get_type_name(@estimate_form.product_type_id) %>
+            <%= InvType.get_type_name(@estimate_form.estimate.product_type_id) %>
           </td>
           <td>
-            <%= @estimate_form.sell_count %>
+            <%= @estimate_form.estimate.sell_count %>
           </td>
           <td>
-            <%= @estimate_form.total_volume %>
+            <%= @estimate_form.estimate.total_volume %>
           </td>
         </tr>
       </table>
@@ -44,7 +44,7 @@
           </td>
           <td></td>
           <td>
-            <%= number_to_currency(@estimate_form.sell_total_price,
+            <%= number_to_currency(@estimate_form.estimate.sell_total_price,
                                    :precision => 2,
                                    :unit => "isk",
                                    :separator => ",",
@@ -58,7 +58,7 @@
           </td>
           <td></td>
           <td>
-            <%= number_to_currency(@estimate_form.total_cost,
+            <%= number_to_currency(@estimate_form.estimate.total_cost,
                                    :precision => 2,
                                    :unit => "isk",
                                    :separator => ",",
@@ -91,7 +91,7 @@
           <td>
           </td>
           <td>
-            <%= number_to_currency(@estimate_form.material_total_cost,
+            <%= number_to_currency(@estimate_form.estimate.material_total_cost,
                                    :precision => 2,
                                    :unit => "isk",
                                    :separator => ",",
@@ -104,7 +104,7 @@
           </td>
           <td></td>
           <td>
-            <%= number_to_currency(@estimate_form.profit,
+            <%= number_to_currency(@estimate_form.estimate.profit,
                                    :precision => 2,
                                    :unit => "isk",
                                    :separator => ",",

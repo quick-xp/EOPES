@@ -1,14 +1,11 @@
 class EstimateForm
   include ActiveModel::Model
 
-  attr_accessor :sell_price, :sell_count
+  attr_accessor :estimate
   attr_accessor :estimate_blueprint
   attr_accessor :estimate_job_cost
   attr_accessor :user_id
   attr_accessor :jita_price
-  attr_accessor :product_type_id
-  attr_accessor :total_cost, :sell_total_price, :material_total_cost, :profit
-  attr_accessor :total_volume
 
   def get_jita_price!(access_token)
     #材料一覧取得
@@ -59,25 +56,25 @@ class EstimateForm
   def set_total_price!(material_list)
     #sell total count
     product_quantity = IndustryActivityProduct.where(:typeID => self.estimate_blueprint.type_id, :activityID => 1).first
-    self.sell_count = product_quantity.quantity * self.estimate_blueprint.runs
+    self.estimate.sell_count = product_quantity.quantity * self.estimate_blueprint.runs
 
     #Total Volume
-    self.total_volume = self.sell_count * InvType.get_type_volume(self.product_type_id)
+    self.estimate.total_volume = self.estimate.sell_count * InvType.get_type_volume(self.estimate.product_type_id)
 
     #Sell Total Price
-    self.sell_total_price = self.sell_count * self.sell_price
+    self.estimate.sell_total_price = self.estimate.sell_count * self.estimate.sell_price
 
     #material total cost
-    self.material_total_cost = 0.0
+    self.estimate.material_total_cost = 0.0
     material_list.each do |m|
-      self.material_total_cost += m.total_price
+      self.estimate.material_total_cost += m.total_price
     end
 
     #Total Cost
-    self.total_cost = self.estimate_job_cost.total_job_cost + material_total_cost
+    self.estimate.total_cost = self.estimate_job_cost.total_job_cost + self.estimate.material_total_cost
 
     #Profit
-    self.profit = self.sell_total_price.to_f - self.total_cost.to_f
+    self.estimate.profit = self.estimate.sell_total_price.to_f - self.estimate.total_cost.to_f
   end
 
 end

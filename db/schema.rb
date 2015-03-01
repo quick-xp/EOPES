@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20150211145140) do
     t.decimal  "jita_average_price",     precision: 20, scale: 4
     t.decimal  "universe_total_price",   precision: 20, scale: 4
     t.decimal  "universe_average_price", precision: 20, scale: 4
+    t.decimal  "total_volume",           precision: 20, scale: 4
     t.integer  "estimate_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -59,6 +60,14 @@ ActiveRecord::Schema.define(version: 20150211145140) do
   create_table "estimates", force: true do |t|
     t.integer  "type_id"
     t.integer  "user_id"
+    t.decimal  "sell_price",          precision: 20, scale: 4
+    t.integer  "sell_count"
+    t.integer  "product_type_id"
+    t.decimal  "total_cost",          precision: 20, scale: 4
+    t.decimal  "sell_total_price",    precision: 20, scale: 4
+    t.decimal  "material_total_cost", precision: 20, scale: 4
+    t.decimal  "profit",              precision: 20, scale: 4
+    t.decimal  "total_volume",        precision: 20, scale: 4
     t.datetime "created_at"
     t.datetime "updated_at"
   end
