@@ -10,6 +10,15 @@ class EstimatesController < ApplicationController
   end
 
   def show
+    #location
+    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    #market sell order
+    #Default は The Forge
+    @sell_region_id = 10000002
+    @product_market_list = @estimate_form.get_market_data(get_token,
+                                                          @sell_region_id,
+                                                          @estimate_form.estimate.product_type_id)
+
     respond_with(@estimate)
   end
 
@@ -200,6 +209,12 @@ class EstimatesController < ApplicationController
   private
   def set_estimate
     @estimate = Estimate.find(params[:id])
+
+    @estimate_form = EstimateForm.new
+    @estimate_form.estimate = @estimate
+    @estimate_form.estimate_blueprint = @estimate.estimate_blueprint
+    @estimate_form.estimate_job_cost = @estimate.estimate_job_cost
+
   end
 
   def estimate_params
