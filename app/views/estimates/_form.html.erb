@@ -1,9 +1,5 @@
-<section class="content-header">
-  <h1>Estimate Product</h1>
-</section>
-
-<section class="content">
-  <%= form_for @estimate_form, url: estimates_path, method: :post do |f| %>
+<%= form_for @estimate_form, url: estimates_path, method: :post do |f| %>
+    <section class="content">
       <% if @estimate_form.errors.any? %>
           <div id="error_explanation">
             <h2><%= pluralize(@estimate_form.errors.count, "error") %> prohibited this estimate from being saved:</h2>
@@ -15,25 +11,118 @@
             </ul>
           </div>
       <% end %>
+      <div class='col-md-12'>
 
-      <div class="field">
-        <%= f.label :blueprint_type_id %>
-        <br>
-        <%= f.number_field :blueprint_type_id %>
-      </div>
-      <div class="field">
-        <%= f.label :sell_price %>
-        <br>
-        <%= f.number_field :sell_price %>
-      </div>
-      <div class="field">
-        <%= f.label :runs %>
-        <br>
-        <%= f.number_field :runs %>
+        <!-- Blueprint Start-->
+        <%= f.fields_for :estimate_blueprints, @estimate_form.estimate_blueprint do |blueprint_field| %>
+            <div class='col-md-6'>
+              <div class="box box-warning">
+                <div class="box-header">
+                  <h3 class="box-title">Blueprint</h3>
+                </div>
+                <div class="box-body">
+                  <form role="form">
+                    <%= image_tag("https://image.eveonline.com/Type/#{@estimate_form.estimate_blueprint.type_id}_32.png",
+                                  :alt => "Type Image") %>
+                    <%= InvType.get_type_name(@estimate_form.estimate_blueprint.type_id) %>
+                    <br/>
+                    <br/>
+                    <div class="form-group">
+                      <label>Select Blueprint</label>
+                      <select class="form-control">
+                        <option>Not Use This Version</option>
+                      </select>
+                    </div>
+                    <div class='col-md-6'>
+                      <div class="form-group">
+                        <%= blueprint_field.label :me, "ME" %>
+                        <br>
+                        <%= blueprint_field.number_field :me, class: 'form-control' %>
+                      </div>
+                    </div>
+                    <div class='col-md-6'>
+                      <div class="form-group">
+                        <%= blueprint_field.label :te, "TE" %>
+                        <br>
+                        <%= blueprint_field.number_field :te, class: 'form-control' %>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <%= blueprint_field.label :runs %>
+                      <br>
+                      <%= blueprint_field.number_field :runs, class: 'form-control'%>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        <% end %>
+        <!-- Blueprint End-->
+
+        <!-- Skill Start-->
+        <div class='col-md-6'>
+          <div class="box box-warning">
+            <div class="box-header">
+              <h3 class="box-title">Location</h3>
+            </div>
+            <div id="location">
+              <%= render :partial => 'location' %>
+            </div>
+          </div>
+        </div>
+        <!-- Skill End-->
       </div>
 
-      <div class="actions">
-        <%= f.submit %>
+      <div class='col-md-12'>
+        <!-- Material Start-->
+        <div class='col-md-12'>
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Material</h3>
+            </div>
+            <div id="material">
+              <%= render :partial => 'material' %>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- Material End-->
       </div>
-  <% end %>
-</section>
+      <div class='col-md-12'>
+        <!-- Estimate Result Start-->
+        <div class='col-md-12'>
+          <div class="box box-warning">
+            <div class="box-header">
+              <h3 class="box-title">Estimate Result</h3>
+            </div>
+            <div class="row">
+              <div class='col-md-6'>
+                <div id="estimate_result">
+                  <%= render :partial => 'estimate_result' %>
+                </div>
+              </div>
+              <div class='col-md-6'>
+                <div id="sell_order">
+                  <%= render :partial => 'sell_order' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Product End-->
+      </div>
+      <%= f.submit %>
+    </section>
+<% end %>
+
+<script>
+    $('#estimate_form_estimate_blueprints_me').change(function () {
+        set_material(<%=@material_list.count()%>);
+    });
+    $('#estimate_form_estimate_blueprints_runs').change(function () {
+        set_material(<%=@material_list.count()%>);
+    });
+    $('#commit').click(function () {
+        $('#estimate_form').submit();
+    })
+</script>

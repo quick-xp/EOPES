@@ -17,9 +17,13 @@ function set_material(material_count) {
     });
 }
 
-function set_location() {
+function set_location(change_item) {
     var region_id = $("#region_id").val();
     var solar_system_id = $("#solar_system_id").val();
+    if (change_item == "region"){
+        solar_system_id = "";
+    }
+
     $.ajax({
         url: "set_location",
         type: "GET",

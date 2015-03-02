@@ -88,6 +88,43 @@ class EstimatesController < ApplicationController
   end
 
   def edit
+    #jita price
+    @estimate_form.get_jita_price!(get_token)
+
+    #material
+    @material_list = @estimate.estimate_materials
+
+    #location 再設定
+    @region_id = @estimate.estimate_job_cost.region_id
+    @solar_system_id = @estimate.estimate_job_cost.solar_system_id
+
+    #location
+    @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @solar_system_list = MapSolarSystem.where(:regionID => @region_id)
+    .order(:solarSystemName)
+    .map { |list| [list.solarSystemName, list.solarSystemID] }
+
+    #Cost Re Calc
+    @estimate_form.estimate_job_cost.re_calc_job_cost!(@material_list)
+
+    #market sell order
+    #Default は The Forge
+    @sell_region_id = 10000002
+    @product_market_list = @estimate_form.get_market_data(get_token,
+                                                          @sell_region_id,
+                                                          @estimate_form.estimate.product_type_id)
+
+    #Product Sell Order Average
+    @product_region_sell_price_average =
+        MarketDetail.get_region_average_price(@sell_region_id, @estimate_form.estimate.product_type_id)
+    @product_universe_sell_price_average =
+        MarketPrice.get_universe_average_price(@estimate_form.estimate.product_type_id)
+
+    #Total Estimate Result
+    @estimate_form.set_total_price!(@material_list)
+    #session
+    session[:estimate_form] = @estimate_form
+    session[:material_list] = @material_list
   end
 
   def create
@@ -115,7 +152,26 @@ class EstimatesController < ApplicationController
   end
 
   def update
-    @estimate.update(estimate_params)
+    #Get Session
+    @material_list = session[:material_list]
+    @estimate_form = session[:estimate_form]
+
+    #見積基本情報を設定
+    @estimate = @estimate_form.estimate
+    @estimate.user_id = get_current_user_id
+
+    #見積詳細情報(Material)を設定
+    @material_list.each do |material|
+      @estimate.estimate_materials << material
+    end
+
+    #見積詳細情報(Blueprint)を設定
+    @estimate.estimate_blueprint = @estimate_form.estimate_blueprint
+
+    #見積詳細情報(JobCost)を設定
+    @estimate.estimate_job_cost = @estimate_form.estimate_job_cost
+
+    @estimate.save
     respond_with(@estimate)
   end
 
@@ -197,13 +253,13 @@ class EstimatesController < ApplicationController
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
 
     #market sell order
-    @product_market_list = @estimate_form.get_market_data(get_token, @sell_region_id, @estimate_form.product_type_id)
+    @product_market_list = @estimate_form.get_market_data(get_token, @sell_region_id, @estimate_form.estimate.product_type_id)
 
     #Product Sell Order Average
     @product_region_sell_price_average =
-        MarketDetail.get_region_average_price(@sell_region_id, @estimate_form.product_type_id)
+        MarketDetail.get_region_average_price(@sell_region_id, @estimate_form.estimate.product_type_id)
     @product_universe_sell_price_average =
-        MarketPrice.get_universe_average_price(@estimate_form.product_type_id)
+        MarketPrice.get_universe_average_price(@estimate_form.estimate.product_type_id)
   end
 
   private
