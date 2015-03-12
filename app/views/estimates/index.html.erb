@@ -3,30 +3,50 @@
 </section>
 
 <section class="content">
-  <table>
-    <thead>
-    <tr>
-      <th>Type</th>
-      <th>User</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-    </thead>
+  <div class="row">
+    <div class="box">
+      <div class="box-body">
+        <table id="lists" class="table table-bordered table-striped" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+            <th style="width: 40px">#</th>
+            <th>Product</th>
+            <th>Total Cost</th>
+            <th>Total Sell Price</th>
+            <th>Profit</th>
+            <th>Count</th>
+            <th>Total Volume</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
 
-    <tbody>
-    <% @estimates.each do |estimate| %>
-        <tr>
-          <td><%= estimate.type_id %></td>
-          <td><%= estimate.user_id %></td>
-          <td><%= link_to 'Show', estimate %></td>
-          <td><%= link_to 'Edit', edit_estimate_path(estimate) %></td>
-          <td><%= link_to 'Destroy', estimate, method: :delete, data: {confirm: 'Are you sure?'} %></td>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
-
+          <tbody>
+          <% @estimates.each do |estimate| %>
+              <tr>
+                <td><%= image_tag("https://image.eveonline.com/Type/#{estimate.product_type_id}_32.png",
+                                  :alt => "Type Image") %> </td>
+                <td><%= InvType.get_type_name(estimate.product_type_id) %></td>
+                <td><%= number_with_delimiter(number_with_precision(estimate.total_cost,:precision => 2)) %></td>
+                <td><%= estimate.sell_total_price %></td>
+                <td><%= estimate.profit %></td>
+                <td><%= estimate.sell_count %></td>
+                <td><%= estimate.total_volume %></td>
+                <td><%= estimate.created_at %></td>
+                <td><%= estimate.updated_at %></td>
+                <td><%= link_to 'Show', estimate %></td>
+                <td><%= link_to 'Edit', edit_estimate_path(estimate) %></td>
+                <td><%= link_to 'Destroy', estimate, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
   <br>
 
   <%= link_to 'New Estimate', select_estimates_path %>

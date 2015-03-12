@@ -41,6 +41,8 @@ gem "omniauth-eveonline"
 gem 'devise'
 #AdminLTE
 gem 'adminlte-rails'
+#DataTables
+gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
 #環境設定
 gem 'dotenv-rails'
 #session

@@ -53,3 +53,8 @@ function set_sell_market_list() {
         data: 'id=set_sell_market_list&sell_region_id=' + region_id
     });
 }
+
+$(document).ready(function() {
+    $('#lists').dataTable();
+
+} );
