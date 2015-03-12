@@ -31,28 +31,28 @@
             <%= number_to_currency(@estimate_form.estimate_job_cost.base_job_cost,
                                    :precision => 2,
                                    :unit => "isk",
-                                   :separator => ",",
+                                   :separator => ".",
                                    :format => "%n %u") %>
           </td>
           <td>
             <%= number_to_currency(@estimate_form.estimate_job_cost.job_fee,
                                    :precision => 2,
                                    :unit => "isk",
-                                   :separator => ",",
+                                   :separator => ".",
                                    :format => "%n %u") %>
           </td>
           <td>
             <%= number_to_currency(@estimate_form.estimate_job_cost.facility_cost,
                                    :precision => 2,
                                    :unit => "isk",
-                                   :separator => ",",
+                                   :separator => ".",
                                    :format => "%n %u") %>
           </td>
           <td>
             <%= number_to_currency(@estimate_form.estimate_job_cost.total_job_cost,
                                    :precision => 2,
                                    :unit => "isk",
-                                   :separator => ",",
+                                   :separator => ".",
                                    :format => "%n %u") %>
           </td>
         </tr>

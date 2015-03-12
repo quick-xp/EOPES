@@ -26,21 +26,21 @@
             <%= number_to_currency(material.jita_average_price,
                                    :precision => 2,
                                    :unit => "isk",
-                                   :separator => ",",
+                                   :separator => ".",
                                    :format => "%n %u") %>
           </td>
           <td>
             <%= number_to_currency(material.universe_average_price,
                                    :precision => 2,
                                    :unit => "isk",
-                                   :separator => ",",
+                                   :separator => ".",
                                    :format => "%n %u") %>
           </td>
           <td>
             <%= number_to_currency(material.total_volume,
                                    :precision => 2,
                                    :unit => "㎥",
-                                   :separator => ",",
+                                   :separator => ".",
                                    :format => "%n %u") %>
           </td>
           <td>
@@ -50,7 +50,7 @@
             <%= number_to_currency(material.total_price,
                                    :precision => 2,
                                    :unit => "isk",
-                                   :separator => ",",
+                                   :separator => ".",
                                    :format => "%n %u") %>
           </td>
         </tr>
