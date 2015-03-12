@@ -265,6 +265,8 @@ class EstimatesController < ApplicationController
   private
   def set_estimate
     @estimate = Estimate.find(params[:id])
+    #ページ認可
+    page_permission(@estimate.user_id)
 
     @estimate_form = EstimateForm.new
     @estimate_form.estimate = @estimate
@@ -275,6 +277,15 @@ class EstimatesController < ApplicationController
 
   def estimate_params
     params.require(:estimate).permit(:type_id, :user_id)
+  end
+
+  #ページ認可
+  def page_permission(user_id)
+    logger.debug(user_id)
+    logger.debug(get_current_user_id)
+    if user_id.to_s != get_current_user_id.to_s
+      redirect_to home_index_path
+    end
   end
 
 end
