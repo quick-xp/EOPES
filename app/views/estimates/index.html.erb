@@ -30,9 +30,24 @@
                 <td><%= image_tag("https://image.eveonline.com/Type/#{estimate.product_type_id}_32.png",
                                   :alt => "Type Image") %> </td>
                 <td><%= InvType.get_type_name(estimate.product_type_id) %></td>
-                <td><%= number_with_delimiter(number_with_precision(estimate.total_cost,:precision => 2)) %></td>
-                <td><%= estimate.sell_total_price %></td>
-                <td><%= estimate.profit %></td>
+                <td><%= number_to_currency(estimate.total_cost,
+                                           :precision => 2,
+                                           :unit => "isk",
+                                           :separator => ".",
+                                           :format => "%n %u") %>
+                </td>
+                <td><%= number_to_currency(estimate.sell_total_price,
+                                           :precision => 2,
+                                           :unit => "isk",
+                                           :separator => ".",
+                                           :format => "%n %u") %>
+                </td>
+                <td><%= number_to_currency(estimate.profit,
+                                           :precision => 2,
+                                           :unit => "isk",
+                                           :separator => ".",
+                                           :format => "%n %u") %>
+                </td>
                 <td><%= estimate.sell_count %></td>
                 <td><%= estimate.total_volume %></td>
                 <td><%= estimate.created_at %></td>
