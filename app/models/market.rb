@@ -10,7 +10,7 @@ class Market < ActiveRecord::Base
       #Crest を用いてマーケットデータ取得
       json = access_token.get("https://crest-tq.eveonline.com/market/" +
                                   region_id.to_s +
-                                  "/orders/sell/?type=https://api-sisi.testeveonline.com/types/" +
+                                  "/orders/sell/?type=https://crest-tq.eveonline.com/types/" +
                                   type_id.to_s +
                                   "/")
       crest_markets = ActiveSupport::JSON.decode(json.response.env.body)
@@ -56,7 +56,7 @@ class Market < ActiveRecord::Base
         #Crest を用いてマーケットデータ取得
         json = access_token.get("https://crest-tq.eveonline.com/market/" +
                                     region_id.to_s +
-                                    "/orders/sell/?type=https://api-sisi.testeveonline.com/types/" +
+                                    "/orders/sell/?type=https://crest-tq.eveonline.com/types/" +
                                     type_id.to_s +
                                     "/")
         crest_market = ActiveSupport::JSON.decode(json.response.env.body)
