@@ -2,6 +2,6 @@
   <h1>Estimate Product</h1>
 </section>
 
-<%= render 'form' %>
+<%= render :partial => 'form', :locals => {:button_value => 'Create Estimate'} %>
 
 <%= link_to 'Back', :back %>

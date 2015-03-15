@@ -27,6 +27,7 @@
                     <%= InvType.get_type_name(@estimate_form.estimate_blueprint.type_id) %>
                     <br/>
                     <br/>
+
                     <div class="form-group">
                       <label>Select Blueprint</label>
                       <select class="form-control">
@@ -50,7 +51,7 @@
                     <div class="form-group">
                       <%= blueprint_field.label :runs %>
                       <br>
-                      <%= blueprint_field.number_field :runs, class: 'form-control'%>
+                      <%= blueprint_field.number_field :runs, class: 'form-control' %>
                     </div>
                   </form>
                 </div>
@@ -111,7 +112,7 @@
         </div>
         <!-- Product End-->
       </div>
-      <%= f.submit %>
+      <%= f.submit button_value, :class => 'btn btn-primary' %>
     </section>
 <% end %>
 
