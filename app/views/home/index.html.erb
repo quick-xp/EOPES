@@ -8,3 +8,13 @@
   <p>Welcome to EOPES</p>
 </section>
 
+<script>
+    $(document).ready(function () {
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf('chrome') != -1 || userAgent.indexOf('msie') != -1) {
+        } else {
+            alert("このブラウザには対応していません。Chrome/IE で利用できます。");
+        }
+    });
+</script>
+
