@@ -12,10 +12,15 @@ class EstimateForm
     material_list = Array.new
     materials = IndustryActivityMaterial.where(:typeID => self.estimate_blueprint.type_id, :activityID => 1)
     jita_price = Hash::new()
+
+    #マーケットデータリフレッシュ(The Forge)
+    materials.each do |material|
+      material_list << material.materialTypeID
+    end
+    Market.refresh_market_parallel(10000002, material_list, access_token)
+
     #Get The Forge Price
     materials.each do |material|
-      #マーケットデータリフレッシュ(The Forge)
-      Market.refresh_market(10000002, material.materialTypeID, access_token)
       #Jita Top 15 low Price
       market_details = MarketDetail
       .includes(:market)
@@ -55,7 +60,7 @@ class EstimateForm
   def get_market_data(access_token, region_id, type_id)
     #マーケットデータリフレッシュ
     Market.refresh_market(region_id, type_id, access_token)
-    MarketDetail.get_market_data_order_by_price(type_id,region_id,10)
+    MarketDetail.get_market_data_order_by_price(type_id, region_id, 10)
   end
 
   #Total Estimate Result 再計算
