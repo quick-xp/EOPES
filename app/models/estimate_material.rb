@@ -25,6 +25,10 @@ class EstimateMaterial < ActiveRecord::Base
       r.jita_average_price = jita_price_list.fetch(m.materialTypeID)
       r.jita_total_price = r.jita_average_price * r.require_count
       r.universe_average_price = MarketPrice.where(:type_id => r.type_id).first.average_price
+      #Universe に 1件も存在しない原料の場合は平均価格を0とする
+      if r.universe_average_price.nil?
+        r.universe_average_price = 0.0
+      end
       r.universe_total_price = r.universe_average_price * r.require_count
       r.volume = InvType.get_type_volume(m.materialTypeID)
       r.total_volume = r.volume * m.quantity

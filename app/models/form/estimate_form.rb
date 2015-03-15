@@ -30,7 +30,13 @@ class EstimateForm
       market_details.each do |v|
         sum += v.price
       end
-      v = sum / market_details.size
+      #Jita Market に存在しない場合は 原料価格は0 とする
+      #存在する場合は 平均 を 原料価格とする
+      if market_details.nil? || sum == 0.0
+        v = 0
+      else
+        v = sum / market_details.size
+      end
       jita_price.store(material.materialTypeID, v)
     end
     self.jita_price = jita_price
