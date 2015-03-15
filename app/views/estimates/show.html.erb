@@ -49,11 +49,11 @@
         <form role="form">
           <div class="form-group">
             <label>Region</label> :
-            <%= @estimate_form.estimate_job_cost.region_id %></p>
+            <%= get_region_name(@estimate_form.estimate_job_cost.region_id) %></p>
           </div>
           <div class="form-group">
             <label>Solar System</label> :
-            <%= @estimate_form.estimate_job_cost.region_id %>
+            <%= get_solar_system_name(@estimate_form.estimate_job_cost.solar_system_id) %>
           </div>
           <div class="form-group">
             <label>System Cost Index</label> :
