@@ -50,7 +50,7 @@ class EstimatesController < ApplicationController
 
     #Job Cost 計算
     @estimate_job_cost = EstimateJobCost.new
-    @estimate_job_cost.re_calc_job_cost!(@material_list)
+    @estimate_job_cost.re_calc_job_cost!(@material_list,@estimate_blueprint.runs)
     @estimate_form.estimate_job_cost = @estimate_job_cost
 
     #Estimate
@@ -105,7 +105,7 @@ class EstimatesController < ApplicationController
     .map { |list| [list.solarSystemName, list.solarSystemID] }
 
     #Cost Re Calc
-    @estimate_form.estimate_job_cost.re_calc_job_cost!(@material_list)
+    @estimate_form.estimate_job_cost.re_calc_job_cost!(@material_list,@estimate.estimate_blueprint.runs)
 
     #market sell order
     #Default は The Forge
@@ -199,7 +199,7 @@ class EstimatesController < ApplicationController
     @estimate_form.estimate_job_cost.solar_system_id = @solar_system_id
 
     #Cost Re Calc
-    @estimate_form.estimate_job_cost.re_calc_job_cost!(@material_list)
+    @estimate_form.estimate_job_cost.re_calc_job_cost!(@material_list,@estimate_form.estimate_blueprint.runs)
 
     #session ReEntry
     session[:estimate_form] = @estimate_form
@@ -281,8 +281,6 @@ class EstimatesController < ApplicationController
 
   #ページ認可
   def page_permission(user_id)
-    logger.debug(user_id)
-    logger.debug(get_current_user_id)
     if user_id.to_s != get_current_user_id.to_s
       redirect_to home_index_path
     end

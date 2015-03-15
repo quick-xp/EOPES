@@ -4,7 +4,7 @@ class EstimateJobCost < ActiveRecord::Base
   #region_id,solar_system_idどちらも指定されていない場合は全Cost_Indexの平均を
   #region_idのみ指定の場合は、Region内のCost_Indexの平均を
   #solar_system_idまで指定している場合はSolarSystemのCost_Indexを取得する
-  def self.get_system_cost_index(region_id,solar_system_id)
+  def self.get_system_cost_index(region_id, solar_system_id)
     if region_id.nil?
       region_id = ""
     end
@@ -35,13 +35,13 @@ class EstimateJobCost < ActiveRecord::Base
     result
   end
 
-  def re_calc_job_cost!(material_list)
+  def re_calc_job_cost!(material_list, runs)
     #SystemCostIndex設定
     self.system_cost_index =
-        EstimateJobCost.get_system_cost_index(self.region_id,self.solar_system_id)
+        EstimateJobCost.get_system_cost_index(self.region_id, self.solar_system_id)
 
     #BaseJobCost設定
-    self.base_job_cost = get_base_job_cost(material_list)
+    self.base_job_cost = get_base_job_cost(material_list, runs)
 
     #JobFee設定
     self.job_fee = get_job_fee
@@ -55,12 +55,12 @@ class EstimateJobCost < ActiveRecord::Base
 
   #BaseJobCost計算
   #Σ(baseQuantity * adjustedPrice)
-  def get_base_job_cost(material_list)
+  def get_base_job_cost(material_list, runs)
     base_job_cost = 0.0
     material_list.each do |material|
       base_job_cost += material.base_quantity * material.adjusted_price
     end
-    base_job_cost
+    base_job_cost * runs
   end
 
   #JobFee計算
@@ -72,7 +72,7 @@ class EstimateJobCost < ActiveRecord::Base
   #FacilityCost計算
   #JobFee * taxRate / 100
   def get_facility_cost
-    self.job_fee * 0.1 / 100
+    self.job_fee * 10 / 100
   end
 
   #TotalJobCost計算

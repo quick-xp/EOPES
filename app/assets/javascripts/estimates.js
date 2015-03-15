@@ -13,7 +13,7 @@ function set_material(material_count) {
         datatype: "html",
         data: data
     }).done(function(){
-        set_result();
+        set_location();
     });
 }
 
