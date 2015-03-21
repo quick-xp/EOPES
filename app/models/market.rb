@@ -27,7 +27,7 @@ class Market < ActiveRecord::Base
         detail.price = crest_market['price']
         detail.duration = crest_market['duration']
         detail.station_id = crest_market['location']['id']
-        detail.issued = crest_market['issued']
+        detail.issued = crest_market['issued'].to_datetime
         market.market_details << detail
       end
       market.save
