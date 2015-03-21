@@ -63,6 +63,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-byebug' #ruby 2.0
+  gem 'annotate'
 end
 
 group :test do
