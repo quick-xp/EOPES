@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: markets
+#
+#  id         :integer          not null, primary key
+#  type_id    :integer
+#  region_id  :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Market < ActiveRecord::Base
   has_many :market_details, :dependent => :destroy
 
@@ -27,7 +38,7 @@ class Market < ActiveRecord::Base
         detail.price = crest_market['price']
         detail.duration = crest_market['duration']
         detail.station_id = crest_market['location']['id']
-        detail.issued = crest_market['issued']
+        detail.issued = crest_market['issued'].to_datetime
         market.market_details << detail
       end
       market.save
