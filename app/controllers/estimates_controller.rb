@@ -5,7 +5,7 @@ class EstimatesController < ApplicationController
   respond_to :html
 
   def index
-    @estimates = Estimate.all
+    @estimates = Estimate.where(:user_id => get_current_user_id)
     respond_with(@estimates)
   end
 
