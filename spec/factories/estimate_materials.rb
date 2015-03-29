@@ -24,7 +24,7 @@
 
 FactoryGirl.define do
   factory :estimate_material do
-    type_id 1
+    sequence(:type_id) { |n| "#{n}"}
     require_count 1
     price "9.99"
     total_price "9.99"

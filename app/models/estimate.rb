@@ -18,7 +18,7 @@
 #
 
 class Estimate < ActiveRecord::Base
-  has_many :estimate_materials
-  has_one :estimate_blueprint
-  has_one :estimate_job_cost
+  has_many :estimate_materials, :dependent => :destroy
+  has_one :estimate_blueprint, :dependent => :destroy
+  has_one :estimate_job_cost, :dependent => :destroy
 end
