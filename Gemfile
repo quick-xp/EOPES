@@ -52,6 +52,9 @@ gem "rest-client"
 #bulk insert
 gem "activerecord-import"
 
+#cron
+gem 'whenever', :require => false
+
 group :production do
   gem "unicorn"
 end
