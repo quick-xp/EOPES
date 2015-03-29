@@ -15,5 +15,13 @@
 require 'rails_helper'
 
 RSpec.describe EstimateBlueprint, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "設計図ID からProduct ID 取得" do
+    context "Antimatter Charge L Blueprint(1153) の場合" do
+      it "Antimatter Charge L (238)" do
+        @estimate_blueprint = EstimateBlueprint.new
+        @estimate_blueprint.type_id = 1153
+        expect(@estimate_blueprint.get_product_type_id).to eq 238
+      end
+    end
+  end
 end
