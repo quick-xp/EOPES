@@ -53,9 +53,9 @@ class EstimateMaterial < ActiveRecord::Base
       end
       r.universe_total_price = r.universe_average_price * r.require_count
       r.volume = InvType.get_type_volume(m.materialTypeID)
-      r.total_volume = r.volume * m.quantity
+      r.total_volume = r.volume * r.require_count
       r.price = r.jita_average_price.round(2)
-      r.total_price = m.quantity * r.price
+      r.total_price = r.require_count * r.price
       material_list << r
     end
     material_list
