@@ -22,7 +22,7 @@ class Market < ActiveRecord::Base
       crest_markets = Market.get_market_data_from_crest(region_id,type_id,access_token)
       crest_markets = crest_markets['items']
       #DB データ入れ替え
-      market = Market.delete_all(:region_id => region_id, :type_id => type_id)
+      Market.delete_all(:region_id => region_id, :type_id => type_id)
       market = Market.new
       market[:region_id] = region_id
       market[:type_id] = type_id
