@@ -22,7 +22,7 @@ class Market < ActiveRecord::Base
       crest_markets = Market.get_market_data_from_crest(region_id,type_id,access_token)
       crest_markets = crest_markets['items']
       #DB データ入れ替え
-      Market.delete_all(:region_id => region_id, :type_id => type_id)
+      Market.destroy_all(:region_id => region_id, :type_id => type_id)
       market = Market.new
       market[:region_id] = region_id
       market[:type_id] = type_id
@@ -81,7 +81,7 @@ class Market < ActiveRecord::Base
         detail.issued = crest_market['issued']
         market.market_details << detail
       end
-      Market.delete_all(:region_id => region_id, :type_id => refresh_target_list[index])
+      Market.destroy_all(:region_id => region_id, :type_id => refresh_target_list[index])
       market.save
     end
   end
