@@ -1,4 +1,6 @@
 EOPES::Application.routes.draw do
+  get 'market_explorer/index'
+
   resources :estimates do
     collection do
       get "select"
