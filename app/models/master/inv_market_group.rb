@@ -17,7 +17,7 @@
 #  chanceOfDuplicating :float(53)
 #
 
-class InvType < ActiveRecord::Base
+class InvMarketGroup < ActiveRecord::Base
   self.table_name = 'invMarketGroups'
   self.primary_key = 'marketGroupID'
   establish_connection(:EveMasterDB)
