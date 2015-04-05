@@ -5,10 +5,9 @@
         <thead>
         <tr>
           <th>Count</th>
-          <th>price</th>
+          <th>price (isk)</th>
           <th>location</th>
-          <th>issued</th>
-          <th>duration</th>
+          <th>expire at (day)</th>
         </tr>
         </thead>
 
@@ -19,13 +18,16 @@
                   <td><%= market.volume %></td>
                   <td><%= number_to_currency(market.price,
                                              :precision => 2,
-                                             :unit => "isk",
+                                             :unit => "",
                                              :separator => ".",
                                              :format => "%n %u") %>
                   </td>
-                  <td><%= market.station_id %></td>
-                  <td><%= market.issued %></td>
-                  <td><%= market.duration %></td>
+                  <td><%= market.get_station_name %></td>
+                  <td><%= number_to_currency(market.get_expired_at,
+                                             :precision => 2,
+                                             :unit => "",
+                                             :separator => ".",
+                                             :format => "%n %u")%></td>
                 </tr>
             <% end %>
         <% end %>
