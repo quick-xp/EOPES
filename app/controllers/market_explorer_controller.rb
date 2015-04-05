@@ -2,7 +2,7 @@ class MarketExplorerController < ApplicationController
   def index
   end
 
-  #root 取得
+  #MarketGroup取得 取得
   def market_groups
     root_items = InvMarketGroup.all
     @items = []
@@ -15,6 +15,16 @@ class MarketExplorerController < ApplicationController
       @items << v
     end
 
+    #Item取得
+    inv_types = InvType.where.not(:marketGroupID => nil)
+    inv_types.each do |item|
+      v = Hash::new()
+      v['id'] = item.typeID + 100000 #idがかぶらないように100000足す
+      v['parent'] = item.marketGroupID
+      v['text'] = item.typeName
+      v['icon'] = false
+      @items << v
+    end
     render json: @items
   end
 end
