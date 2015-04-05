@@ -11,7 +11,7 @@ class MarketExplorerController < ApplicationController
       v['id'] = item.marketGroupID
       v['parent'] = item.parentGroupID.nil? ? '#' : item.parentGroupID
       v['text'] = item.marketGroupName
-      v['icon'] = "https://image.eveonline.com/Type/#{item.iconID.to_s}_32.png"
+      v['icon'] = false
       @items << v
     end
 

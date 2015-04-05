@@ -11,6 +11,7 @@
 #
 
 class InvMarketGroup < ActiveRecord::Base
+  belongs_to :EveIcon, foreign_key: "iconID"
   self.table_name = 'invMarketGroups'
   self.primary_key = 'marketGroupID'
   establish_connection(:EveMasterDB)
