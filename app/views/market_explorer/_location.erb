@@ -1,0 +1,18 @@
+<form role="form">
+    <div class="form-group">
+      <label>Region</label>
+      <%= select_tag :region_id, options_for_select(@region_list, "10000002"),
+                     class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <label>Solar System</label>
+      <%= select_tag :solar_system_id, options_for_select(@solar_system_list, @solar_system_id),
+                     :prompt => "All Solar System", class: 'form-control' %>
+    </div>
+</form>
+
+<script>
+    $('#region_id').change(function () {
+        set_location("region");
+    });
+</script>

@@ -1,6 +1,8 @@
 EOPES::Application.routes.draw do
   get 'market_explorer/index'
   get 'market_explorer/market_groups'
+  get 'market_explorer/set_location'
+  get 'market_explorer/get_market'
 
   resources :estimates do
     collection do
