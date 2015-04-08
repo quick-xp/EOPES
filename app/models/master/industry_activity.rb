@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: industryActivity
+#
+#  typeID     :integer          default("0"), not null, primary key
+#  time       :integer
+#  activityID :integer          default("0"), not null
+#
+
 class IndustryActivity < ActiveRecord::Base
   self.table_name = 'industryActivity'
   establish_connection(:EveMasterDB)

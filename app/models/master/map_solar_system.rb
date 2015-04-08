@@ -5,7 +5,7 @@
 #  regionID        :integer
 #  constellationID :integer
 #  solarSystemID   :integer          not null, primary key
-#  solarSystemName :string(100)
+#  solarSystemName :text(4294967295)
 #  x               :float(53)
 #  y               :float(53)
 #  z               :float(53)
@@ -27,7 +27,7 @@
 #  factionID       :integer
 #  radius          :float(53)
 #  sunTypeID       :integer
-#  securityClass   :string(2)
+#  securityClass   :text(4294967295)
 #
 
 class MapSolarSystem < ActiveRecord::Base

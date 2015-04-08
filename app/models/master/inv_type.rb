@@ -12,7 +12,7 @@
 #  portionSize         :integer
 #  raceID              :integer
 #  basePrice           :decimal(19, 4)
-#  published           :integer
+#  published           :boolean
 #  marketGroupID       :integer
 #  chanceOfDuplicating :float(53)
 #
@@ -24,6 +24,10 @@ class InvType < ActiveRecord::Base
 
   def self.get_type_name(typeID)
     InvType.find(typeID).try(:typeName)
+  end
+
+  def self.get_description(typeID)
+    InvType.find(typeID).try(:description)
   end
 
   def self.get_type_volume(typeID)

@@ -1,0 +1,2 @@
+module MarketExplorerHelper
+end

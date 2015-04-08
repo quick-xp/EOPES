@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jstree.min
 //= require bootstrap.min
 //= require admin-lte
 //= require dataTables/jquery.dataTables

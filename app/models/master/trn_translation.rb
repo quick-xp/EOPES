@@ -5,7 +5,7 @@
 #  tcID       :integer          not null
 #  keyID      :integer          not null
 #  languageID :string(50)       not null
-#  text       :text(65535)
+#  text       :text(4294967295) not null
 #
 
 class TrnTranslation < ActiveRecord::Base
