@@ -1,0 +1,22 @@
+<div class="box">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-6">
+        <label>Region (market)</label>
+        <%= select_tag :region_id, options_for_select(@region_list, "10000002"),
+                       class: 'form-control' %>
+      </div>
+      <div class="col-md-6">
+        <label>Solar System (market)</label>
+        <%= select_tag :solar_system_id, options_for_select(@solar_system_list, @solar_system_id),
+                       :prompt => "All Solar System", class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $('#region_id').change(function () {
+        set_location("region");
+    });
+</script>

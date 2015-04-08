@@ -20,5 +20,32 @@
 require 'rails_helper'
 
 RSpec.describe Estimate, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "削除依存関係テスト" do
+    before :each do
+      create(:estimate_material, :estimate_id => 1)
+      create(:estimate_material, :estimate_id => 1)
+      create(:estimate_material, :estimate_id => 2)
+      create(:estimate_blueprint, :estimate_id => 1)
+      create(:estimate_blueprint, :estimate_id => 2)
+      create(:estimate_job_cost, :estimate_id => 1)
+      create(:estimate_job_cost, :estimate_id => 2)
+
+      @estimate = create(:estimate, :id => 1)
+      @estimate.destroy
+    end
+    context "Estimate を削除した場合" do
+      it "関連する estimate_material が削除される" do
+        expect(EstimateMaterial.where(:estimate_id => 1).count).to eq 0
+        expect(EstimateMaterial.where(:estimate_id => 2).count).to eq 1
+      end
+      it "関連する estimate_blueprint が削除される" do
+        expect(EstimateBlueprint.where(:estimate_id => 1).count).to eq 0
+        expect(EstimateBlueprint.where(:estimate_id => 2).count).to eq 1
+      end
+      it "関連する estimate_job_cost が削除される" do
+        expect(EstimateBlueprint.where(:estimate_id => 1).count).to eq 0
+        expect(EstimateBlueprint.where(:estimate_id => 2).count).to eq 1
+      end
+    end
+  end
 end

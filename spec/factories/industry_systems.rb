@@ -14,8 +14,10 @@
 
 FactoryGirl.define do
   factory :industry_system do
-    solar_system_id 1
-    cost_index "9.99"
-    activity_id 1
+    factory :industry_system_jita do
+        solar_system_id 30000142 #Jita
+    end
+    cost_index "0.002"
+    activity_id 1 #Manufacturing
   end
 end

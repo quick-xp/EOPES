@@ -75,6 +75,7 @@ group :test do
   gem "database_cleaner"
   gem "launchy"
   gem "selenium-webdriver"
+  gem "timecop"
 end
 
 # Use ActiveModel has_secure_password

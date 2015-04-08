@@ -1,0 +1,13 @@
+$('#market').html($("<%= j render 'market' %>"));
+$(document).ready(function () {
+    $('#lists').dataTable({
+        "lengthMenu": [
+            [10, 15, 20, 50],
+            [10, 15, 20, 50]
+        ],
+        "stateSave": true,
+        "order": [
+            [2, "asc"]
+        ]
+    });
+});

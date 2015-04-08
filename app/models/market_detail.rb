@@ -26,6 +26,13 @@ class MarketDetail < ActiveRecord::Base
     end
   end
 
+  #有効期限
+  def get_expired_at
+    #(Time.now - (issued + (duration * 60 * 24))).to_datetime
+    #(Time.now - (issued).to_datetime) / (24*60*60)
+    (((issued.to_datetime).to_f + (duration.to_f * 24*60*60)) - Time.now.to_f) / (24*60*60)
+  end
+
   def self.get_market_data_order_by_price(type_id, region_id, limit)
     MarketDetail
     .includes(:market)
@@ -38,7 +45,7 @@ class MarketDetail < ActiveRecord::Base
   #平均とは マーケットデータのTop 15 の価格の平均と定義する
   def self.get_region_average_price(region_id, type_id)
     market_details =
-        MarketDetail.get_market_data_order_by_price(type_id,region_id,15)
+        MarketDetail.get_market_data_order_by_price(type_id, region_id, 15)
     #average
     sum = 0.0
     market_details.each do |v|

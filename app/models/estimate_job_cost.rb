@@ -33,7 +33,6 @@ class EstimateJobCost < ActiveRecord::Base
     if region_id == "" && solar_system_id == ""
       result = IndustrySystem.where(:activity_id => 1).average(:cost_index)
     elsif solar_system_id == ""
-      result = IndustrySystem
       solar_systems = MapSolarSystem.where(:regionID => region_id)
       costs_sum = 0.0
       solar_systems.each do |s|
@@ -42,7 +41,9 @@ class EstimateJobCost < ActiveRecord::Base
           costs_sum += v1.cost_index.to_f
         end
       end
-      result = costs_sum / solar_systems.count
+      if solar_systems.present?
+        result = costs_sum / solar_systems.count
+      end
     else
       v1 = IndustrySystem.where(:solar_system_id => solar_system_id, :activity_id => 1).first
       if v1 != nil

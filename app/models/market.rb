@@ -19,15 +19,10 @@ class Market < ActiveRecord::Base
     if market.nil? ||
         market.updated_at < Time.now - ENV['JITA_PRICE_REFRESH_TIME'].to_i.minutes
       #Crest を用いてマーケットデータ取得
-      json = access_token.get("https://crest-tq.eveonline.com/market/" +
-                                  region_id.to_s +
-                                  "/orders/sell/?type=https://crest-tq.eveonline.com/types/" +
-                                  type_id.to_s +
-                                  "/")
-      crest_markets = ActiveSupport::JSON.decode(json.response.env.body)
+      crest_markets = Market.get_market_data_from_crest(region_id, type_id, access_token)
       crest_markets = crest_markets['items']
       #DB データ入れ替え
-      market = Market.delete_all(:region_id => region_id, :type_id => type_id)
+      Market.destroy_all(:region_id => region_id, :type_id => type_id)
       market = Market.new
       market[:region_id] = region_id
       market[:type_id] = type_id
@@ -43,6 +38,28 @@ class Market < ActiveRecord::Base
       end
       market.save
     end
+  end
+
+  #get_market_data
+  def self.get_market_data(region_id, type_id, access_token)
+    #Crest を用いてマーケットデータ取得
+    crest_markets = Market.get_market_data_from_crest(region_id, type_id, access_token)
+    crest_markets = crest_markets['items']
+
+    market = Market.new
+    market[:region_id] = region_id
+    market[:type_id] = type_id
+    crest_markets.each do |crest_market|
+      detail = MarketDetail.new
+      detail.volume = crest_market['volume']
+      detail.buy = crest_market['buy']
+      detail.price = crest_market['price']
+      detail.duration = crest_market['duration']
+      detail.station_id = crest_market['location']['id']
+      detail.issued = crest_market['issued'].to_datetime
+      market.market_details << detail
+    end
+    market
   end
 
   #Market Data Refresh(Parallel)
@@ -65,12 +82,7 @@ class Market < ActiveRecord::Base
     refresh_target_list.each_with_index do |type_id, index|
       threads << Thread.new do
         #Crest を用いてマーケットデータ取得
-        json = access_token.get("https://crest-tq.eveonline.com/market/" +
-                                    region_id.to_s +
-                                    "/orders/sell/?type=https://crest-tq.eveonline.com/types/" +
-                                    type_id.to_s +
-                                    "/")
-        crest_market = ActiveSupport::JSON.decode(json.response.env.body)
+        crest_market = Market.get_market_data_from_crest(region_id, type_id, access_token)
         crest_market_list[index] = crest_market['items']
       end
     end
@@ -91,9 +103,18 @@ class Market < ActiveRecord::Base
         detail.issued = crest_market['issued']
         market.market_details << detail
       end
-      Market.delete_all(:region_id => region_id, :type_id => refresh_target_list[index])
+      Market.destroy_all(:region_id => region_id, :type_id => refresh_target_list[index])
       market.save
     end
+  end
+
+  def self.get_market_data_from_crest(region_id, type_id, access_token)
+    json = access_token.get("https://crest-tq.eveonline.com/market/" +
+                                region_id.to_s +
+                                "/orders/sell/?type=https://crest-tq.eveonline.com/types/" +
+                                type_id.to_s +
+                                "/")
+    ActiveSupport::JSON.decode(json.response.env.body)
   end
 end
 

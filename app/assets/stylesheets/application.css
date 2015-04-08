@@ -16,6 +16,6 @@
  *= require admin-lte
  *= require iCheck/all
  *= require datatables/dataTables.bootstrap
+ *= require jstree
  *= require_tree .
  */
-

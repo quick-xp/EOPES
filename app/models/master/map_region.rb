@@ -3,7 +3,7 @@
 # Table name: mapRegions
 #
 #  regionID   :integer          not null, primary key
-#  regionName :string(100)
+#  regionName :text(4294967295)
 #  x          :float(53)
 #  y          :float(53)
 #  z          :float(53)
