@@ -40,12 +40,28 @@ class MarketExplorerController < ApplicationController
     # select value setting
     @region_id = params[:region_id]
     @solar_system_id = params[:solar_system_id]
-    type_id = params[:type_id]
+    @type_id = params[:type_id]
     #type_id は予め100000足していたので引く
-    type_id = type_id.to_i - 100000
+    @type_id = @type_id.to_i - 100000
     @markets = Market.get_market_data(@region_id,
-                                      type_id,
+                                      @type_id,
                                       get_token)
+
+    #Solar Systemでの絞込
+    if @solar_system_id != ""
+      market = Market.new
+      market[:region_id] = @region_id
+      market[:type_id] = @type_id
+      station_ids = StaStation.where(:solarSystemID => @solar_system_id)
+      @markets.market_details.each do |m|
+        station_ids.each do |s|
+          if s.stationID == m.station_id
+            market.market_details << m
+          end
+        end
+      end
+      @markets = market
+    end
   end
 
   #location設定

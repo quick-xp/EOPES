@@ -18,8 +18,7 @@ $(document).ready(function () {
         }
         to = setTimeout(function () {
             var v = $('#jstree_categories_search').val();
-            console.log(v);
-            console.log(v.length);
+            //4文字以上入力されたら検索する
             if (v.length > 4) {
                 $('#jstree_categories').jstree(true).search(v);
             }
@@ -37,6 +36,7 @@ $(document).ready(function () {
             if (r > 100000) {
                 var region_id = $("#region_id").val();
                 var solar_system_id = $("#solar_system_id").val();
+                dispLoading();
                 $.ajax({
                     url: "get_market",
                     type: "GET",
@@ -46,7 +46,15 @@ $(document).ready(function () {
                 });
             }
 
-        })
+        });
+
+    //☓ボタン treeを閉じる
+    $('#close').click(function () {
+            $('#jstree_categories').jstree(true).search("");
+            $('#jstree_categories_search').val("");
+            $('#jstree_categories').jstree(true).close_all();
+        }
+    );
 
 });
 
@@ -56,7 +64,6 @@ function set_location(change_item) {
     if (change_item == "region") {
         solar_system_id = "";
     }
-
     $.ajax({
         url: "set_location",
         type: "GET",
@@ -65,3 +72,23 @@ function set_location(change_item) {
     });
 };
 
+function dispLoading() {
+    $("#market").html("<h2><i class='fa fa-refresh fa-spin'></i> Now Loading...</h2>");
+};
+
+
+function refresh_market(){
+    var region_id = $("#region_id").val();
+    var solar_system_id = $("#solar_system_id").val();
+    // 100000 を足した数をtype_id とする(後の計算で100000引くため)
+    var hidden_type_id = $("#hidden_type_id").val();
+    hidden_type_id = Number(hidden_type_id) + 100000;
+    dispLoading();
+    $.ajax({
+        url: "get_market",
+        type: "GET",
+        datatype: "html",
+        data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
+            + "&type_id=" + hidden_type_id
+    });
+};

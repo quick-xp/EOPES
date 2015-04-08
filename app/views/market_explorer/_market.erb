@@ -1,6 +1,35 @@
 <div class="row">
   <div class="box">
     <div class="box-body">
+      <% if @type_id.present? %>
+          <div class="row">
+            <div class="col-md-1">
+              <%= image_tag("https://image.eveonline.com/Type/#{@type_id}_64.png",
+                            :alt => "Type Image") %>
+            </div>
+            <div class="col-md-4">
+              Item : <%= InvType.get_type_name(@type_id) %>
+              <br/>
+              Universe Average Price : <%= MarketPrice.find_by_type_id(@type_id).average_price %>
+            </div>
+            <div class="col-md-5">
+                <input type="hidden" id="hidden_type_id" value="<%=@type_id%>"/>
+            </div>
+            <div class="col-md-2">
+              <a id="refresh" class="btn btn-app" onclick="refresh_market();">
+                <i class="fa fa-repeat">
+                </i>
+                Refresh
+              </a>
+            </div>
+          </div>
+      <% else %>
+          Select Item
+      <% end %>
+    </div>
+  </div>
+  <div class="box">
+    <div class="box-body">
       <table id="lists" class="table table-bordered table-striped" cellspacing="0" width="100%">
         <thead>
         <tr>
@@ -27,7 +56,7 @@
                                              :precision => 2,
                                              :unit => "",
                                              :separator => ".",
-                                             :format => "%n %u")%></td>
+                                             :format => "%n %u") %></td>
                 </tr>
             <% end %>
         <% end %>

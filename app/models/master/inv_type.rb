@@ -26,6 +26,10 @@ class InvType < ActiveRecord::Base
     InvType.find(typeID).try(:typeName)
   end
 
+  def self.get_description(typeID)
+    InvType.find(typeID).try(:description)
+  end
+
   def self.get_type_volume(typeID)
     InvType.find(typeID).try(:volume)
   end
