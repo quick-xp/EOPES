@@ -1,10 +1,20 @@
+
 # rails runner "Jobs::MapShortPath.new.run"
 # solarSystem間の最小Jumps数を求める
+require "CMapShortPath"
 class Jobs::MapShortPath
   INF = 9999999.freeze
 
   def run
     puts "Job Start (MapShortPath)" + Time.now.to_s
+    c_map_short_path = CMapShortPath.new
+    p c_map_short_path.get_short_jump_count(1)
+    puts "Job End (MapShortPath)" + Time.now.to_s
+  end
+
+
+  #Station間の最小Jump数を求める(ruby版)(性能問題により使用しない)
+  def get_short_path_for_ruby
     convert_list = get_convert_list_solar_system_id_to_array_num
 
     edges = []
@@ -58,7 +68,6 @@ class Jobs::MapShortPath
       MapJump.import map_jumps
       puts i.to_s + " / " + nodes.length.to_s + " complete(result insert)"
     end
-    puts "Job End (MapShortPath)" + Time.now.to_s
   end
 
   #Solar System IDを0,1,2と配列で扱える値に変換する
