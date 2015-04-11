@@ -7,8 +7,20 @@ class Jobs::MapShortPath
 
   def run
     puts "Job Start (MapShortPath)" + Time.now.to_s
+
+    convert_list = get_convert_list_solar_system_id_to_array_num
+    nodes = self.get_solar_system_analyze_target
+    from_array = []
+    to_array = []
+    nodes.length.times do |i|
+      from_array[i] = convert_list[nodes[i].fromSolarSystemID]
+      to_array[i] = convert_list[nodes[i].toSolarSystemID]
+    end
+
+    #C言語 最小Jumps数
     c_map_short_path = CMapShortPath.new
-    p c_map_short_path.get_short_jump_count(1)
+    jumps = c_map_short_path.get_short_jump_count(from_array,to_array,nodes.length)
+
     puts "Job End (MapShortPath)" + Time.now.to_s
   end
 
