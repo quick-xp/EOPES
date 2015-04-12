@@ -11,29 +11,41 @@ function set_material(material_count) {
         url: "set_material",
         type: "GET",
         datatype: "html",
-        data: data,
-        async: false
+        data: data
+    }).done(function () {
+        set_location_change_solar_system();
     });
 
-    set_location();
 }
 
-function set_location(change_item) {
+function set_location_change_solar_system() {
     var region_id = $("#region_id").val();
     var solar_system_id = $("#solar_system_id").val();
-    if (change_item == "region"){
-        solar_system_id = "";
-    }
 
     $.ajax({
         url: "set_location",
         type: "GET",
         datatype: "html",
         data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
-    }).done(function(){
+    }).done(function () {
         set_result();
     });
 }
+
+function set_location_change_region() {
+    var region_id = $("#region_id").val();
+    var solar_system_id = "";
+
+    $.ajax({
+        url: "set_location",
+        type: "GET",
+        datatype: "html",
+        data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
+    }).done(function () {
+        set_result();
+    });
+}
+
 
 function set_result() {
     var sell_price = $("#estimate_sell_price").val();
@@ -55,7 +67,7 @@ function set_sell_market_list() {
     });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('#lists').dataTable();
 
-} );
+});
