@@ -5,7 +5,7 @@ require "CMapShortPath"
 class Jobs::MapShortPath
   INF = 9999999.freeze
 
-  def run
+  def run(temp_file_full_path)
     puts "Job Start (MapShortPath)" + Time.now.to_s
 
     convert_list = get_convert_list_solar_system_id_to_array_num
@@ -17,9 +17,9 @@ class Jobs::MapShortPath
       to_array[i] = convert_list[nodes[i].toSolarSystemID]
     end
 
-    #C言語 最小Jumps数
+    #C言語 最小Jumps数(ファイル出力する)
     c_map_short_path = CMapShortPath.new
-    jumps = c_map_short_path.get_short_jump_count(from_array,to_array,nodes.length)
+    c_map_short_path.export_short_jump_count(from_array,to_array,nodes.length,temp_file_full_path)
 
     puts "Job End (MapShortPath)" + Time.now.to_s
   end
@@ -85,8 +85,8 @@ class Jobs::MapShortPath
   #Solar System IDを0,1,2と配列で扱える値に変換する
   def get_convert_list_solar_system_id_to_array_num
     convert_list = Hash::new()
-    maps = MapSolarSystem.all
-    #maps = MapSolarSystem.where(:regionID => 10000002)
+    #maps = MapSolarSystem.all
+    maps = MapSolarSystem.where(:regionID => 10000002)
     maps.each_with_index do |m, i|
       convert_list[m.solarSystemID] = i
     end
@@ -95,7 +95,7 @@ class Jobs::MapShortPath
 
   #解析対象のSolarSystem
   def get_solar_system_analyze_target
-    MapSolarSystemJumps.all
-    #MapSolarSystemJumps.where(:toRegionID => 10000002, :fromRegionID => 10000002)
+    #MapSolarSystemJumps.all
+    MapSolarSystemJumps.where(:toRegionID => 10000002, :fromRegionID => 10000002)
   end
 end

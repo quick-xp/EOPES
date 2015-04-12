@@ -8,7 +8,7 @@ int min(int a,int b){
     }
     return b;
 }
-VALUE get_short_jump_count(VALUE self,VALUE from_array_o,VALUE to_array_o,VALUE size_o){
+void export_short_jump_count(VALUE self,VALUE from_array_o,VALUE to_array_o,VALUE size_o,VALUE fullPath){
     int size = FIX2INT(size_o);
     static int edges[15000][15000];
     VALUE from_array_v = rb_ary_to_ary(from_array_o);
@@ -44,7 +44,8 @@ VALUE get_short_jump_count(VALUE self,VALUE from_array_o,VALUE to_array_o,VALUE 
 
     //本計算
    for(int k = 0; k < size; k++){
-       printf("%d / %d complete(short jump count)"¥n,k,size);
+       printf("%d / %d complete(short jump count)",k,size);
+       puts("");
        for(int i = 0; i < size; i++){
             for(int j = 0; j < size; j++){
                 edges[i][j] = min(edges[i][j], edges[i][k] + edges[k][j]);
@@ -52,12 +53,13 @@ VALUE get_short_jump_count(VALUE self,VALUE from_array_o,VALUE to_array_o,VALUE 
        }
    }
 
-    return from_array_o;
+    //export_temp_file
+
 }
 
 void Init_CMapShortPath(void){
     VALUE rbClass;
 
     rbClass = rb_define_class("CMapShortPath",rb_cObject);
-    rb_define_method(rbClass,"get_short_jump_count",get_short_jump_count,3);
+    rb_define_method(rbClass,"export_short_jump_count",get_short_jump_count,4);
 }
