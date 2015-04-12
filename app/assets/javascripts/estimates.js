@@ -1,5 +1,5 @@
 function set_material(material_count) {
-    var count = material_count
+    var count = material_count;
     var data = "id=price_change";
     var me = $('#estimate_form_estimate_blueprints_me').val();
     var runs = $('#estimate_form_estimate_blueprints_runs').val();
@@ -11,10 +11,11 @@ function set_material(material_count) {
         url: "set_material",
         type: "GET",
         datatype: "html",
-        data: data
-    }).done(function(){
-        set_location();
+        data: data,
+        async: false
     });
+
+    set_location();
 }
 
 function set_location(change_item) {
