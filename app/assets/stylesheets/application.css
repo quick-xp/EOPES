@@ -10,7 +10,6 @@
  *
  *= require_self
  *= require bootstrap-custom
- *= require font-awesome-custom
  *= require ionicons-custom
  *= require dataTables/jquery.dataTables
  *= require admin-lte-custom
