@@ -9,13 +9,12 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require bootstrap
- *= require font-awesome
- *= require ionicons
+ *= require bootstrap-custom
+ *= require ionicons-custom
  *= require dataTables/jquery.dataTables
- *= require admin-lte
+ *= require admin-lte-custom
  *= require iCheck/all
- *= require datatables/dataTables.bootstrap
+ *= require dataTables.bootstrap-custom
  *= require jstree
  *= require_tree .
  */
