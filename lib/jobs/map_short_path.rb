@@ -1,7 +1,7 @@
-
 # rails runner "Jobs::MapShortPath.new.run"
 # solarSystem間の最小Jumps数を求める
 require "CMapShortPath"
+require "csv"
 class Jobs::MapShortPath
   INF = 9999999.freeze
 
@@ -19,7 +19,37 @@ class Jobs::MapShortPath
 
     #C言語 最小Jumps数(ファイル出力する)
     c_map_short_path = CMapShortPath.new
-    c_map_short_path.export_short_jump_count(from_array,to_array,nodes.length,temp_file_full_path)
+    c_map_short_path.export_short_jump_count(from_array, to_array, nodes.length, temp_file_full_path)
+
+    #Conver List Key Value反転
+    de_convert_list = convert_list.invert
+    #出力結果読み取り,格納
+    map_jumps = []
+    count = 0
+    insert_count = 0
+    MapJump.delete_all
+    CSV.foreach(temp_file_full_path) { |row|
+      from = de_convert_list[row[0].to_i]
+      to = de_convert_list[row[1].to_i]
+      jump_c = row[2].to_i
+      #配列IDから逆引きできた場合のみ格納する
+      if from.present? && to.present?
+        map_jumps << MapJump.new(:from_solar_system_id => from,
+                                 :to_solar_system_id => to,
+                                 :jump => jump_c.to_i)
+        count += 1
+      end
+
+      #一定間隔でDBに格納する
+      if count == 3000
+        count = 0
+        insert_count = insert_count + 1
+        MapJump.import map_jumps
+        puts "bulk insert count " + insert_count.to_s
+        map_jumps = []
+      end
+    }
+    MapJump.import map_jumps
 
     puts "Job End (MapShortPath)" + Time.now.to_s
   end
@@ -85,8 +115,8 @@ class Jobs::MapShortPath
   #Solar System IDを0,1,2と配列で扱える値に変換する
   def get_convert_list_solar_system_id_to_array_num
     convert_list = Hash::new()
-    #maps = MapSolarSystem.all
-    maps = MapSolarSystem.where(:regionID => 10000002)
+    maps = MapSolarSystem.all
+    #maps = MapSolarSystem.where(:regionID => 10000002)
     maps.each_with_index do |m, i|
       convert_list[m.solarSystemID] = i
     end
@@ -95,7 +125,7 @@ class Jobs::MapShortPath
 
   #解析対象のSolarSystem
   def get_solar_system_analyze_target
-    #MapSolarSystemJumps.all
-    MapSolarSystemJumps.where(:toRegionID => 10000002, :fromRegionID => 10000002)
+    MapSolarSystemJumps.all
+    #MapSolarSystemJumps.where(:toRegionID => 10000002, :fromRegionID => 10000002)
   end
 end

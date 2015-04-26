@@ -54,12 +54,24 @@ void export_short_jump_count(VALUE self,VALUE from_array_o,VALUE to_array_o,VALU
    }
 
     //export_temp_file
+   FILE *fp;
+   char *fname = StringValuePtr(fullPath);
+   fp = fopen( fname, "w" );
 
+   for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            if (edges[i][j] < 32767){
+                fprintf(fp,"%d,%d,%d\n",i,j,edges[i][j]);
+            }
+        }
+   }
+
+    fclose( fp );
 }
 
 void Init_CMapShortPath(void){
     VALUE rbClass;
 
     rbClass = rb_define_class("CMapShortPath",rb_cObject);
-    rb_define_method(rbClass,"export_short_jump_count",get_short_jump_count,4);
+    rb_define_method(rbClass,"export_short_jump_count",export_short_jump_count,4);
 }
