@@ -36,12 +36,15 @@ $(document).ready(function () {
             if (r > 100000) {
                 var region_id = $("#region_id").val();
                 var solar_system_id = $("#solar_system_id").val();
+                //jump数用に現在のStation取得
+                var current_solar_system_id = $("#current_solar_system_id").val();
                 dispLoading();
                 $.ajax({
                     url: "get_market",
                     type: "GET",
                     datatype: "html",
                     data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
+                        + "&current_solar_system_id=" + current_solar_system_id
                         + "&type_id=" + r
                 });
             }
@@ -96,6 +99,8 @@ function dispLoading() {
 function refresh_market(){
     var region_id = $("#region_id").val();
     var solar_system_id = $("#solar_system_id").val();
+    //jump数用に現在のStation取得
+    var current_solar_system_id = $("#current_solar_system_id").val();
     // 100000 を足した数をtype_id とする(後の計算で100000引くため)
     var hidden_type_id = $("#hidden_type_id").val();
     hidden_type_id = Number(hidden_type_id) + 100000;
@@ -105,6 +110,7 @@ function refresh_market(){
         type: "GET",
         datatype: "html",
         data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
+            + "&current_solar_system_id=" + current_solar_system_id
             + "&type_id=" + hidden_type_id
     });
 };

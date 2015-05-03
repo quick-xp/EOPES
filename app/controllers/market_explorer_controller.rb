@@ -43,6 +43,7 @@ class MarketExplorerController < ApplicationController
     # select value setting
     @region_id = params[:region_id]
     @solar_system_id = params[:solar_system_id]
+    @current_solar_system_id = params[:current_solar_system_id]
     @type_id = params[:type_id]
     #type_id は予め100000足していたので引く
     @type_id = @type_id.to_i - 100000
