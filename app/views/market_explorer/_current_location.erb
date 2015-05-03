@@ -1,0 +1,22 @@
+<div class="box">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-6">
+        <label>Region (current location)</label>
+        <%= select_tag :current_region_id, options_for_select(@current_region_list, "10000002"),
+                       class: 'form-control' %>
+      </div>
+      <div class="col-md-6">
+        <label>Solar System (current location)</label>
+        <%= select_tag :current_solar_system_id, options_for_select(@current_solar_system_list, "30000142"),
+                       class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $('#current_region_id').change(function () {
+        set_current_location("region");
+    });
+</script>

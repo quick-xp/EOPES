@@ -58,6 +58,7 @@ $(document).ready(function () {
 
 });
 
+//Market のプルダウン設定
 function set_location(change_item) {
     var region_id = $("#region_id").val();
     var solar_system_id = $("#solar_system_id").val();
@@ -66,6 +67,21 @@ function set_location(change_item) {
     }
     $.ajax({
         url: "set_location",
+        type: "GET",
+        datatype: "html",
+        data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
+    });
+};
+
+//Current Location のプルダウン設定
+function set_current_location(change_item) {
+    var region_id = $("#current_region_id").val();
+    var solar_system_id = $("#current_solar_system_id").val();
+    if (change_item == "region") {
+        solar_system_id = "";
+    }
+    $.ajax({
+        url: "set_current_location",
         type: "GET",
         datatype: "html",
         data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id

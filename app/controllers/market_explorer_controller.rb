@@ -4,8 +4,11 @@ class MarketExplorerController < ApplicationController
     #region_list and solar_system_list
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = MapSolarSystem.where(:regionID => "10000002")
+    @current_region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @current_solar_system_list = MapSolarSystem.where(:regionID => "10000002")
     .order(:solarSystemName)
     .map { |list| [list.solarSystemName, list.solarSystemID] }
+    @current_solar_system_id = 30000142
   end
 
   #MarketGroup取得 取得
@@ -64,7 +67,7 @@ class MarketExplorerController < ApplicationController
     end
   end
 
-  #location設定
+  #Market location設定
   def set_location
     # select value setting
     @region_id = params[:region_id]
@@ -73,6 +76,19 @@ class MarketExplorerController < ApplicationController
     #region_list and solar_system_list
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = MapSolarSystem.where(:regionID => @region_id)
+    .order(:solarSystemName)
+    .map { |list| [list.solarSystemName, list.solarSystemID] }
+  end
+
+  #Current location設定
+  def set_current_location
+    # select value setting
+    @current_region_id = params[:region_id]
+    @current_solar_system_id = params[:solar_system_id]
+
+    #region_list and solar_system_list
+    @current_region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
+    @current_solar_system_list = MapSolarSystem.where(:regionID => @current_region_id)
     .order(:solarSystemName)
     .map { |list| [list.solarSystemName, list.solarSystemID] }
   end
