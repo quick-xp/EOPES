@@ -41,9 +41,9 @@ class Market < ActiveRecord::Base
   end
 
   #get_market_data
-  def self.get_market_data(region_id, type_id, access_token)
+  def self.get_market_data(region_id, type_id, access_token, market_kind="sell")
     #Crest を用いてマーケットデータ取得
-    crest_markets = Market.get_market_data_from_crest(region_id, type_id, access_token)
+    crest_markets = Market.get_market_data_from_crest(region_id, type_id, access_token, market_kind)
     crest_markets = crest_markets['items']
 
     market = Market.new
@@ -108,10 +108,10 @@ class Market < ActiveRecord::Base
     end
   end
 
-  def self.get_market_data_from_crest(region_id, type_id, access_token)
+  def self.get_market_data_from_crest(region_id, type_id, access_token, market_kind = "sell")
     json = access_token.get("https://crest-tq.eveonline.com/market/" +
                                 region_id.to_s +
-                                "/orders/sell/?type=https://crest-tq.eveonline.com/types/" +
+                                "/orders/"+ market_kind.downcase + "/?type=https://crest-tq.eveonline.com/types/" +
                                 type_id.to_s +
                                 "/")
     ActiveSupport::JSON.decode(json.response.env.body)

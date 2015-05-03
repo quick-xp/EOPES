@@ -1,5 +1,10 @@
 class MarketExplorerController < ApplicationController
   def index
+    #sell buy どちらの情報を表示するかを示す値を取得する
+    @market_kind = params[:market_kind]
+    if @market_kind != "Buy"
+      @market_kind = "Sell"
+    end
     #location
     #region_list and solar_system_list
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
@@ -44,12 +49,14 @@ class MarketExplorerController < ApplicationController
     @region_id = params[:region_id]
     @solar_system_id = params[:solar_system_id]
     @current_solar_system_id = params[:current_solar_system_id]
+    market_kind = params[:market_kind]
     @type_id = params[:type_id]
     #type_id は予め100000足していたので引く
     @type_id = @type_id.to_i - 100000
     @markets = Market.get_market_data(@region_id,
                                       @type_id,
-                                      get_token)
+                                      get_token,
+                                      market_kind)
 
     #Solar Systemでの絞込
     if @solar_system_id != ""

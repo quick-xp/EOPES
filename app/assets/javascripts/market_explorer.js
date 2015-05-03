@@ -38,6 +38,8 @@ $(document).ready(function () {
                 var solar_system_id = $("#solar_system_id").val();
                 //jump数用に現在のStation取得
                 var current_solar_system_id = $("#current_solar_system_id").val();
+                //取得するMarketの種類を取得(Sell or Buy)
+                var market_kind = $("#hidden_market_kind").val();
                 dispLoading();
                 $.ajax({
                     url: "get_market",
@@ -45,6 +47,7 @@ $(document).ready(function () {
                     datatype: "html",
                     data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
                         + "&current_solar_system_id=" + current_solar_system_id
+                        + "&market_kind=" + market_kind
                         + "&type_id=" + r
                 });
             }
@@ -101,6 +104,8 @@ function refresh_market(){
     var solar_system_id = $("#solar_system_id").val();
     //jump数用に現在のStation取得
     var current_solar_system_id = $("#current_solar_system_id").val();
+    //取得するMarketの種類を取得(Sell or Buy)
+    var market_kind = $("#hidden_market_kind").val();
     // 100000 を足した数をtype_id とする(後の計算で100000引くため)
     var hidden_type_id = $("#hidden_type_id").val();
     hidden_type_id = Number(hidden_type_id) + 100000;
@@ -111,6 +116,7 @@ function refresh_market(){
         datatype: "html",
         data: 'id=region_id_change&region_id=' + region_id + "&solar_system_id=" + solar_system_id
             + "&current_solar_system_id=" + current_solar_system_id
+            + "&market_kind=" + market_kind
             + "&type_id=" + hidden_type_id
     });
 };
