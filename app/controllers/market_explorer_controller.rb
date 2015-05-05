@@ -9,10 +9,12 @@ class MarketExplorerController < ApplicationController
     #region_list and solar_system_list
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = MapSolarSystem.where(:regionID => "10000002")
+                             .order(:solarSystemName)
+                             .map { |list| [list.solarSystemName, list.solarSystemID] }
     @current_region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @current_solar_system_list = MapSolarSystem.where(:regionID => "10000002")
-    .order(:solarSystemName)
-    .map { |list| [list.solarSystemName, list.solarSystemID] }
+                                     .order(:solarSystemName)
+                                     .map { |list| [list.solarSystemName, list.solarSystemID] }
     @current_solar_system_id = 30000142
   end
 
@@ -84,8 +86,8 @@ class MarketExplorerController < ApplicationController
     #region_list and solar_system_list
     @region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @solar_system_list = MapSolarSystem.where(:regionID => @region_id)
-    .order(:solarSystemName)
-    .map { |list| [list.solarSystemName, list.solarSystemID] }
+                             .order(:solarSystemName)
+                             .map { |list| [list.solarSystemName, list.solarSystemID] }
   end
 
   #Current location設定
@@ -97,7 +99,7 @@ class MarketExplorerController < ApplicationController
     #region_list and solar_system_list
     @current_region_list = MapRegion.all.order(:regionName).map { |list| [list.regionName, list.regionID] }
     @current_solar_system_list = MapSolarSystem.where(:regionID => @current_region_id)
-    .order(:solarSystemName)
-    .map { |list| [list.solarSystemName, list.solarSystemID] }
+                                     .order(:solarSystemName)
+                                     .map { |list| [list.solarSystemName, list.solarSystemID] }
   end
 end
