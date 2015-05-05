@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411083641) do
+ActiveRecord::Schema.define(version: 20150505022037) do
 
   create_table "estimate_blueprints", force: :cascade do |t|
     t.integer  "type_id",     limit: 4
@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(version: 20150411083641) do
     t.integer "to_solar_system_id",   limit: 4
     t.integer "jump",                 limit: 4
   end
+
+  add_index "map_jumps", ["from_solar_system_id", "to_solar_system_id"], name: "index_map_jumps_on_from_solar_system_id_and_to_solar_system_id", using: :btree
 
   create_table "market_details", force: :cascade do |t|
     t.integer  "volume",     limit: 4
