@@ -50,10 +50,16 @@
                   <span>Industry Profit Calc</span>
               <% end %>
             </li>
-            <li class="<%= active?("market_explorer") %>">
-              <%= link_to market_explorer_index_path do %>
+            <li class="<%= active_market_explorer?("market_explorer", "Sell") %>">
+              <%= link_to market_explorer_index_path(:market_kind => "Sell") do %>
                   <%= image_tag("market.png", :size => "48x48") %>
-                  <span>Market Explorer(sell)</span>
+                  <span>Market Explorer(Sell)</span>
+              <% end %>
+            </li>
+            <li class="<%= active_market_explorer?("market_explorer", "Buy") %>">
+              <%= link_to market_explorer_index_path(:market_kind => "Buy") do %>
+                  <%= image_tag("market.png", :size => "48x48") %>
+                  <span>Market Explorer(Buy)</span>
               <% end %>
             </li>
             <li>

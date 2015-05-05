@@ -22,4 +22,10 @@
 /.idea/workspace.xml
 /.idea
 
+# Ignore C Compile file
+/lib/*.o
+/lib/Makefile
+/lib/*.bundle
+/script/Makefile
+
 tags

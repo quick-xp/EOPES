@@ -33,6 +33,7 @@
       <table id="lists" class="table table-bordered table-striped" cellspacing="0" width="100%">
         <thead>
         <tr>
+          <th>Jumps</th>
           <th>Count</th>
           <th>price (isk)</th>
           <th>location</th>
@@ -44,6 +45,7 @@
         <% if @markets.present? %>
             <% @markets.market_details.each do |market| %>
                 <tr>
+                  <td><%= get_solar_system_jump_count(@current_solar_system_id,market.station_id)%></td>
                   <td><%= market.volume %></td>
                   <td><%= number_to_currency(market.price,
                                              :precision => 2,
