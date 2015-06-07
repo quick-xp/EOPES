@@ -42,13 +42,44 @@ RSpec.describe EstimatesController, :type => :controller do
       get :index, {}, valid_session
       expect(assigns(:estimates)).to eq([estimate])
     end
+
+    context "現在ユーザと他ユーザの情報が複数ある場合" do
+      it "現在ユーザの情報のみ取得できる"
+    end
+
   end
 
   describe "GET show" do
+    login_user
+    before :each do
+      create(:estimate_material, :estimate_id => 1)
+      create(:estimate_material, :estimate_id => 2)
+      create(:estimate_blueprint, :estimate_id => 1)
+      create(:estimate_blueprint, :estimate_id => 2)
+      create(:estimate_job_cost, :estimate_id => 1)
+      create(:estimate_job_cost, :estimate_id => 2)
+      @estimate = create(:estimate, :id => 1, :user_id => 100000000)
+      @estimate = create(:estimate, :id => 2, :user_id => 999)
+    end
+
     it "assigns the requested estimate as @estimate" do
-      estimate = Estimate.create! valid_attributes
-      get :show, {:id => estimate.to_param}, valid_session
-      expect(assigns(:estimate)).to eq(estimate)
+      get :show, {:id => @estimate.to_param}
+      expect(assigns(:estimate)).to eq(@estimate)
+    end
+
+    context "作成者と現在ユーザが同じである場合" do
+      it ":show テンプレートを表示すること" do
+        get :show, {:id => @estimate.to_param}
+        expect(response).to render_template :show
+      end
+    end
+  end
+
+  describe "Get select" do
+    login_user
+    it ":select テンプレートを表示すること" do
+      get :select
+      expect(response).to render_template :select
     end
   end
 
