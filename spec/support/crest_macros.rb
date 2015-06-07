@@ -30,4 +30,11 @@ module CrestMacros
       allow(Market).to receive(:get_market_data_from_crest).and_return(crest_market_data)
     end
   end
+
+  def get_dummy_market_data_for_controller
+    get_dummy_market_data
+    before(:each) do
+      allow(controller).to receive(:get_token).and_return("")
+    end
+  end
 end

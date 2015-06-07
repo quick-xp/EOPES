@@ -42,6 +42,7 @@ RSpec.configure do |config|
   config.extend ControllerMacros, :type => :controller
   # Crest ダミー取得用
   config.extend CrestMacros, :type => :model
+  config.extend CrestMacros, :type => :controller
 
   # rspec-mocks config goes here. You can use an alternate test double
   # library (such as bogus or mocha) by changing the `mock_with` option here.

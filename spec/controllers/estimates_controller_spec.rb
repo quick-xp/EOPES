@@ -37,29 +37,36 @@ RSpec.describe EstimatesController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all estimates as @estimates" do
-      estimate = Estimate.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:estimates)).to eq([estimate])
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    #Dummy Estimate Data
+    before :each do
+      create_dummy_estimate_data
+    end
+    it ":index テンプレートを表示すること" do
+      get :index
+      expect(response).to render_template :index
     end
 
     context "現在ユーザと他ユーザの情報が複数ある場合" do
-      it "現在ユーザの情報のみ取得できる"
+      it "現在ユーザの情報のみ取得できる" do
+        get :index
+        expect(assigns(:estimates)).to eq([@estimate])
+      end
     end
 
   end
 
   describe "GET show" do
+    #ユーザログイン
     login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    #Dummy Estimate Data
     before :each do
-      create(:estimate_material, :estimate_id => 1)
-      create(:estimate_material, :estimate_id => 2)
-      create(:estimate_blueprint, :estimate_id => 1)
-      create(:estimate_blueprint, :estimate_id => 2)
-      create(:estimate_job_cost, :estimate_id => 1)
-      create(:estimate_job_cost, :estimate_id => 2)
-      @estimate = create(:estimate, :id => 1, :user_id => 100000000)
-      @estimate = create(:estimate, :id => 2, :user_id => 999)
+      create_dummy_estimate_data
     end
 
     it "assigns the requested estimate as @estimate" do
@@ -73,6 +80,13 @@ RSpec.describe EstimatesController, :type => :controller do
         expect(response).to render_template :show
       end
     end
+
+    context "作成者と現在ユーザが同じでない場合" do
+      it ":show テンプレートが表示されないこと" do
+        get :show, {:id => 2}
+        expect(response).not_to render_template :show
+      end
+    end
   end
 
   describe "Get select" do
@@ -84,10 +98,34 @@ RSpec.describe EstimatesController, :type => :controller do
   end
 
   describe "GET new" do
-    #it "assigns a new estimate as @estimate" do
-    #  get :new, {}, valid_session
-    #  expect(assigns(:estimate)).to be_a_new(Estimate)
-    #end
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    before :each do
+      #'Abatis' 100mm Reinforced Steel Plates I Blueprint
+      session[:type_id] = 23784
+      #Market Price データ作成
+      create_dummy_market_price_data
+      #System毎のdummy cost index作成
+      create_dummy_industry_systems
+    end
+
+    it ":new テンプレートを表示すること" do
+      get :new
+      expect(response).to render_template :new
+    end
+
+    it "@region_listにリージョン一覧が設定されること"
+    it "@solar_system_listに空の配列が設定されること"
+    it "選ばれたBluePrintに対応した製品のRegion内の平均価格が設定されること"
+    it "選ばれたBluePrintに対応した製品のUniverse内の平均価格が設定されること"
+    it "選ばれたBluePrintに対応した製品のmaterial listがセッションに詰められること"
+    it "選ばれたBlueprintの情報が@estimate_formに設定されていること その際 runs:1,me:10,te:10であること"
+    it "選ばれたBlueprintの生産時ジョブコストが計算され@estimate_formに設定されていること"
+    it "選ばれたBlueprintに対応した製品のtype_idが@estimate_formに設定されていること"
+    it "選ばれたBlueprintに対応した製品の初期Sell Priceが設定されていること　なお、リージョン内の平均価格が設定されること"
+    it "合計見積もり価格が設定されること"
   end
 
   describe "GET edit" do
@@ -187,4 +225,30 @@ RSpec.describe EstimatesController, :type => :controller do
     end
   end
 
+  def create_dummy_estimate_data
+    create(:estimate_material, :estimate_id => 1)
+    create(:estimate_material, :estimate_id => 2)
+    create(:estimate_blueprint, :estimate_id => 1)
+    create(:estimate_blueprint, :estimate_id => 2)
+    create(:estimate_job_cost, :estimate_id => 1)
+    create(:estimate_job_cost, :estimate_id => 2)
+    @estimate = create(:estimate, :id => 1, :user_id => "100000000")
+    create(:estimate, :id => 2, :user_id => "999")
+  end
+
+  def create_dummy_market_price_data
+    create(:market_price, :type_id => 34,:adjusted_price => 10.0,:average_price => 10.0)
+    create(:market_price, :type_id => 35,:adjusted_price => 10.0,:average_price => 10.0)
+    create(:market_price, :type_id => 36,:adjusted_price => 10.0,:average_price => 10.0)
+    create(:market_price, :type_id => 37,:adjusted_price => 10.0,:average_price => 10.0)
+    create(:market_price, :type_id => 38,:adjusted_price => 10.0,:average_price => 10.0)
+    create(:market_price, :type_id => 39,:adjusted_price => 10.0,:average_price => 10.0)
+    create(:market_price, :type_id => 23133,:adjusted_price => 10.0,:average_price => 10.0)
+    create(:market_price, :type_id => 23143,:adjusted_price => 10.0,:average_price => 10.0)
+    create(:market_price, :type_id => 23173,:adjusted_price => 10.0,:average_price => 10.0)
+  end
+
+  def create_dummy_industry_systems
+    create(:industry_system_jita)
+  end
 end
