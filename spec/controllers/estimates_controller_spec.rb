@@ -174,6 +174,10 @@ RSpec.describe EstimatesController, :type => :controller do
         expect(assigns(:estimate_form).estimate.sell_price).to eq 11.0
       end
 
+      it "選ばれたBlueprintに対応した製品の市場価格一覧が@product_market_listに設定されること" do
+        expect(assigns(:product_market_list)).to_not eq nil
+      end
+
       it "合計見積もり価格が設定されること" do
         expect(assigns(:estimate_form).estimate.total_cost).to eq 6059.436
       end
@@ -181,10 +185,76 @@ RSpec.describe EstimatesController, :type => :controller do
   end
 
   describe "GET edit" do
-    it "assigns the requested estimate as @estimate" do
-      estimate = Estimate.create! valid_attributes
-      get :edit, {:id => estimate.to_param}, valid_session
-      expect(assigns(:estimate)).to eq(estimate)
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    #Dummy Estimate Data
+    before :each do
+      create_dummy_estimate_data
+      #Market Price データ作成
+      create_dummy_market_price_data
+      #System毎のdummy cost index作成
+      create_dummy_industry_systems
+      #Crest から 取得するMarketのdummy data
+      create_dummy_market_data
+      create_dummy_market_detail_data
+    end
+
+    context "作成者と現在ユーザが同じである場合" do
+      before :each do
+        get :edit, {:id => @estimate.to_param}
+      end
+
+      it ":edit テンプレートを表示すること" do
+        expect(response).to render_template :edit
+      end
+
+      it "@region_listにリージョン一覧が設定されること" do
+        expect(assigns(:region_list)[0][1]).to eq (11000001)
+        expect(assigns(:region_list)[1][1]).to eq (11000002)
+      end
+
+      it "@solar_system_listにジョブコストを見積もった際のリージョンに対応したソーラーシステム一覧が設定されること" do
+        expect(assigns(:solar_system_list)[0]).to eq (["Abagawa", 30000147])
+        expect(assigns(:solar_system_list)[1]).to eq ( ["Ahtulaima", 30000125])
+      end
+
+      it "元々の見積で作成されたBluePrintに対応した製品のRegion内の平均価格が設定されること" do
+        expect(assigns(:product_region_sell_price_average)).to eq 11.0
+      end
+
+      it "元々の見積で作成されたBluePrintに対応した製品のUniverse内の平均価格が設定されること" do
+        expect(assigns(:product_universe_sell_price_average)).to eq 12.5
+      end
+
+      it "元々の見積もりで作成された原料一覧がmaterial listがセッションに詰められること" do
+        material_list = session[:material_list]
+        expect_material_list = []
+        %w(34).each do |v|
+          expect_material_list << v.to_i
+        end
+        actual_material_list = []
+        material_list.each do |v|
+          actual_material_list << v.type_id
+        end
+        expect(actual_material_list).to match_array expect_material_list
+      end
+
+      it "元々の見積で作成されたBluePrintに対応した製品の市場価格一覧が@product_market_listに設定されること" do
+        expect(assigns(:product_market_list)).to_not eq nil
+      end
+
+      it "合計見積もり価格が設定されること" do
+        expect(assigns(:estimate_form).estimate.total_cost).to_not eq nil
+      end
+    end
+
+    context "作成者と現在ユーザが同じでない場合" do
+      it ":edit テンプレートが表示されないこと" do
+        get :edit, {:id => 2}
+        expect(response).not_to render_template :edit
+      end
     end
   end
 
@@ -278,14 +348,14 @@ RSpec.describe EstimatesController, :type => :controller do
   end
 
   def create_dummy_estimate_data
-    create(:estimate_material, :estimate_id => 1)
+    create(:estimate_material, :estimate_id => 1, :type_id => 34, :base_quantity => 1, :adjusted_price => 1)
     create(:estimate_material, :estimate_id => 2)
-    create(:estimate_blueprint, :estimate_id => 1)
-    create(:estimate_blueprint, :estimate_id => 2)
-    create(:estimate_job_cost, :estimate_id => 1)
+    create(:estimate_blueprint, :estimate_id => 1, :type_id => 23784)
+    create(:estimate_blueprint, :estimate_id => 2, :type_id => 23784)
+    create(:estimate_job_cost, :estimate_id => 1, :region_id => 10000002)
     create(:estimate_job_cost, :estimate_id => 2)
-    @estimate = create(:estimate, :id => 1, :user_id => "100000000")
-    create(:estimate, :id => 2, :user_id => "999")
+    @estimate = create(:estimate, :id => 1, :user_id => "100000000", :product_type_id => 23783)
+    create(:estimate, :id => 2, :user_id => "999", :product_type_id => 23783)
   end
 
   def create_dummy_market_price_data
