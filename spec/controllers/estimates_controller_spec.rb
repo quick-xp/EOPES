@@ -109,23 +109,75 @@ RSpec.describe EstimatesController, :type => :controller do
       create_dummy_market_price_data
       #System毎のdummy cost index作成
       create_dummy_industry_systems
+      #Crest から 取得するMarketのdummy data
+      create_dummy_market_data
+      create_dummy_market_detail_data
     end
 
-    it ":new テンプレートを表示すること" do
-      get :new
-      expect(response).to render_template :new
-    end
+    context "new に遷移した時" do
+      before :each do
+        get :new
+      end
 
-    it "@region_listにリージョン一覧が設定されること"
-    it "@solar_system_listに空の配列が設定されること"
-    it "選ばれたBluePrintに対応した製品のRegion内の平均価格が設定されること"
-    it "選ばれたBluePrintに対応した製品のUniverse内の平均価格が設定されること"
-    it "選ばれたBluePrintに対応した製品のmaterial listがセッションに詰められること"
-    it "選ばれたBlueprintの情報が@estimate_formに設定されていること その際 runs:1,me:10,te:10であること"
-    it "選ばれたBlueprintの生産時ジョブコストが計算され@estimate_formに設定されていること"
-    it "選ばれたBlueprintに対応した製品のtype_idが@estimate_formに設定されていること"
-    it "選ばれたBlueprintに対応した製品の初期Sell Priceが設定されていること　なお、リージョン内の平均価格が設定されること"
-    it "合計見積もり価格が設定されること"
+      it ":new テンプレートを表示すること" do
+        expect(response).to render_template :new
+      end
+
+      it "@region_listにリージョン一覧が設定されること" do
+        expect(assigns(:region_list)[0][1]).to eq (11000001)
+        expect(assigns(:region_list)[1][1]).to eq (11000002)
+      end
+
+      it "@solar_system_listに空の配列が設定されること" do
+        expect(assigns(:solar_system_list)).to eq ([["", ""]])
+      end
+
+      it "選ばれたBluePrintに対応した製品のRegion内の平均価格が設定されること" do
+        expect(assigns(:product_region_sell_price_average)).to eq 11.0
+      end
+
+      it "選ばれたBluePrintに対応した製品のUniverse内の平均価格が設定されること" do
+        expect(assigns(:product_universe_sell_price_average)).to eq 12.5
+      end
+
+      it "選ばれたBluePrintに対応した製品のmaterial listがセッションに詰められること" do
+        material_list = session[:material_list]
+        expect_material_list = []
+        %w(34 35 36 37 38 39 23133 23143 23173).each do |v|
+          expect_material_list << v.to_i
+        end
+        actual_material_list = []
+        material_list.each do |v|
+          actual_material_list << v.type_id
+        end
+        expect(actual_material_list).to match_array expect_material_list
+      end
+
+      it "選ばれたBlueprintの情報が@estimate_formに設定されていること その際 runs:1,me:10,te:10であること" do
+        estimate_form = assigns(:estimate_form)
+        expect(estimate_form.estimate_blueprint.type_id).to eq 23784
+        expect(estimate_form.estimate_blueprint.runs).to eq 1
+        expect(estimate_form.estimate_blueprint.me).to eq 10
+        expect(estimate_form.estimate_blueprint.te).to eq 10
+      end
+
+      it "選ばれたBlueprintの生産時ジョブコストが計算され@estimate_formに設定されていること" do
+        actual_estimate_form = assigns(:estimate_form)
+        expect(actual_estimate_form.estimate_job_cost).to_not eq nil
+      end
+
+      it "選ばれたBlueprintに対応した製品のtype_idが@estimate_formに設定されていること" do
+        expect(assigns(:estimate_form).estimate.product_type_id).to eq 23783
+      end
+
+      it "選ばれたBlueprintに対応した製品の初期Sell Priceが設定されていること　なお、リージョン内の平均価格が設定されること" do
+        expect(assigns(:estimate_form).estimate.sell_price).to eq 11.0
+      end
+
+      it "合計見積もり価格が設定されること" do
+        expect(assigns(:estimate_form).estimate.total_cost).to eq 6059.436
+      end
+    end
   end
 
   describe "GET edit" do
@@ -237,15 +289,37 @@ RSpec.describe EstimatesController, :type => :controller do
   end
 
   def create_dummy_market_price_data
-    create(:market_price, :type_id => 34,:adjusted_price => 10.0,:average_price => 10.0)
-    create(:market_price, :type_id => 35,:adjusted_price => 10.0,:average_price => 10.0)
-    create(:market_price, :type_id => 36,:adjusted_price => 10.0,:average_price => 10.0)
-    create(:market_price, :type_id => 37,:adjusted_price => 10.0,:average_price => 10.0)
-    create(:market_price, :type_id => 38,:adjusted_price => 10.0,:average_price => 10.0)
-    create(:market_price, :type_id => 39,:adjusted_price => 10.0,:average_price => 10.0)
-    create(:market_price, :type_id => 23133,:adjusted_price => 10.0,:average_price => 10.0)
-    create(:market_price, :type_id => 23143,:adjusted_price => 10.0,:average_price => 10.0)
-    create(:market_price, :type_id => 23173,:adjusted_price => 10.0,:average_price => 10.0)
+    #material data
+    create(:market_price, :type_id => 34, :adjusted_price => 10.0, :average_price => 10.0)
+    create(:market_price, :type_id => 35, :adjusted_price => 10.0, :average_price => 10.0)
+    create(:market_price, :type_id => 36, :adjusted_price => 10.0, :average_price => 10.0)
+    create(:market_price, :type_id => 37, :adjusted_price => 10.0, :average_price => 10.0)
+    create(:market_price, :type_id => 38, :adjusted_price => 10.0, :average_price => 10.0)
+    create(:market_price, :type_id => 39, :adjusted_price => 10.0, :average_price => 10.0)
+    create(:market_price, :type_id => 23133, :adjusted_price => 10.0, :average_price => 10.0)
+    create(:market_price, :type_id => 23143, :adjusted_price => 10.0, :average_price => 10.0)
+    create(:market_price, :type_id => 23173, :adjusted_price => 10.0, :average_price => 10.0)
+    #product data
+    create(:market_price, :type_id => 23783, :adjusted_price => 10.0, :average_price => 12.5)
+  end
+
+  def create_dummy_market_data
+    create(:market, :type_id => 23783, :region_id => 10000002, :id => 100)
+  end
+
+  def create_dummy_market_detail_data
+    create(:market_detail, :id => 100,
+           :volume => "10",
+           :buy => false,
+           :price => 10.0,
+           :station_id => 60003760,
+           :market_id => 100)
+    create(:market_detail, :id => 101,
+           :volume => "10",
+           :buy => false,
+           :price => 12.0,
+           :station_id => 60003760,
+           :market_id => 100)
   end
 
   def create_dummy_industry_systems
