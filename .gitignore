@@ -28,4 +28,7 @@
 /lib/*.bundle
 /script/Makefile
 
+# Ignore coverage
+/coverage
+
 tags

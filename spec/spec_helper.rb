@@ -21,6 +21,8 @@ require File.expand_path("../../config/environment",__FILE__)
 require File.expand_path("../support/controller_macros.rb",__FILE__)
 require File.expand_path("../support/crest_macros.rb",__FILE__)
 require 'rspec/rails'
+require 'simplecov'
+SimpleCov.start
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
