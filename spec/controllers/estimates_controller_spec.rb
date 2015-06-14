@@ -179,7 +179,7 @@ RSpec.describe EstimatesController, :type => :controller do
       end
 
       it "合計見積もり価格が設定されること" do
-        expect(assigns(:estimate_form).estimate.total_cost).to eq 6059.436
+        expect(assigns(:estimate_form).estimate.total_cost).to_not eq nil
       end
 
       it "Session estimate_form がnilでない事" do
@@ -320,63 +320,279 @@ RSpec.describe EstimatesController, :type => :controller do
   end
 
   describe "PUT update" do
-    describe "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested estimate" do
-        estimate = Estimate.create! valid_attributes
-        put :update, {:id => estimate.to_param, :estimate => new_attributes}, valid_session
-        estimate.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "assigns the requested estimate as @estimate" do
-        estimate = Estimate.create! valid_attributes
-        put :update, {:id => estimate.to_param, :estimate => valid_attributes}, valid_session
-        expect(assigns(:estimate)).to eq(estimate)
-      end
-
-      it "redirects to the estimate" do
-        estimate = Estimate.create! valid_attributes
-        put :update, {:id => estimate.to_param, :estimate => valid_attributes}, valid_session
-        expect(response).to redirect_to(estimate)
-      end
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    #Dummy Estimate Data
+    before :each do
+      create_dummy_estimate_data
+      #Market Price データ作成
+      create_dummy_market_price_data
+      #System毎のdummy cost index作成
+      create_dummy_industry_systems
+      #Crest から 取得するMarketのdummy data
+      create_dummy_market_data
+      create_dummy_market_detail_data
+      get :edit, {:id => @estimate.to_param}
     end
 
-    describe "with invalid params" do
-      it "assigns the estimate as @estimate" do
-        estimate = Estimate.create! valid_attributes
-        put :update, {:id => estimate.to_param, :estimate => invalid_attributes}, valid_session
-        expect(assigns(:estimate)).to eq(estimate)
-      end
-
-      it "re-renders the 'edit' template" do
-        estimate = Estimate.create! valid_attributes
-        put :update, {:id => estimate.to_param, :estimate => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
-      end
+    it "Estimate が 更新されること" do
+      new_estimate_form = session[:estimate_form]
+      new_estimate_form.estimate.sell_count = 2
+      session[:estimate_form] = new_estimate_form
+      put :update, {:id => @estimate.to_param}
+      @estimate.reload
+      expect(@estimate.sell_count).to eq 2
     end
+
+    it "EstimateJobCost が 更新されること" do
+      new_estimate_form = session[:estimate_form]
+      new_estimate_form.estimate_job_cost.total_job_cost = 999.9
+      session[:estimate_form] = new_estimate_form
+      put :update, {:id => @estimate.to_param}
+      @estimate.reload
+      expect(@estimate.estimate_job_cost.total_job_cost).to eq 999.9
+    end
+
+    it "EstimateBlueprint が 更新されること" do
+      new_estimate_form = session[:estimate_form]
+      new_estimate_form.estimate_blueprint.me = 9
+      session[:estimate_form] = new_estimate_form
+      put :update, {:id => @estimate.to_param}
+      @estimate.reload
+      expect(@estimate.estimate_blueprint.me).to eq 9
+    end
+
+    it "EstimateMaterial が 更新されること" do
+      new_material_list = session[:material_list]
+      new_material_list[0].price = 999.9
+      session[:material_list] = new_material_list
+      put :update, {:id => @estimate.to_param}
+      @estimate.reload
+      expect(@estimate.estimate_materials[0].price).to eq 999.9
+    end
+
+    it "update 後は リダイレクトされること" do
+      put :update, {:id => @estimate.to_param}
+      expect(response).to redirect_to(@estimate)
+    end
+
   end
 
   describe "DELETE destroy" do
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    #Dummy Estimate Data
+    before :each do
+      create_dummy_estimate_data
+    end
+
     it "destroys the requested estimate" do
-      estimate = Estimate.create! valid_attributes
       expect {
-        delete :destroy, {:id => estimate.to_param}, valid_session
+        delete :destroy, {:id => @estimate.to_param}
       }.to change(Estimate, :count).by(-1)
     end
 
     it "redirects to the estimates list" do
-      estimate = Estimate.create! valid_attributes
-      delete :destroy, {:id => estimate.to_param}, valid_session
+      delete :destroy, {:id => @estimate.to_param}
       expect(response).to redirect_to(estimates_url)
     end
   end
 
+  describe "get set_location" do
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    #Dummy Estimate Data
+    before :each do
+      create_dummy_estimate_data
+      estimate_form = EstimateForm.new
+      estimate_form.estimate = @estimate
+      estimate_form.estimate_blueprint = @estimate.estimate_blueprint
+      estimate_form.estimate_job_cost = @estimate.estimate_job_cost
+      material_list = @estimate.estimate_materials
+      #session
+      session[:estimate_form] = estimate_form
+      session[:material_list] = material_list
+
+      @before_job_cost = estimate_form.estimate_job_cost.total_job_cost
+    end
+
+    context "region を変更した場合" do
+      before :each do
+        xhr :get, :set_location, {:region_id => "10000016", :solar_system_id => ""}
+      end
+
+      it "region_list が再設定される" do
+        expect(assigns(:region_list)[0][1]).to eq (11000001)
+        expect(assigns(:region_list)[1][1]).to eq (11000002)
+      end
+
+      it "solar_system_list が再設定される" do
+        expect(assigns(:solar_system_list)[0][1]).to eq (30001396)
+      end
+
+      it "region_id が再設定される" do
+        expect(assigns(:estimate_form).estimate_job_cost.region_id).to eq 10000016
+      end
+
+      it "solar_system_id が再設定される" do
+        expect(assigns(:estimate_form).estimate_job_cost.solar_system_id).to eq nil
+      end
+
+      it "job_cost が再計算される" do
+        expect(assigns(:estimate_form).estimate_job_cost.total_job_cost).to_not eq @before_job_cost
+      end
+
+    end
+
+    context "Solar System を変更した場合" do
+      before :each do
+        xhr :get, :set_location, {:region_id => "10000016", :solar_system_id => "30001401"}
+      end
+      it "region_list が再設定される" do
+        expect(assigns(:region_list)[0][1]).to eq (11000001)
+        expect(assigns(:region_list)[1][1]).to eq (11000002)
+      end
+
+      it "solar_system_list が再設定される" do
+        expect(assigns(:solar_system_list)[0][1]).to eq (30001396)
+      end
+
+      it "region_id が再設定される" do
+        expect(assigns(:estimate_form).estimate_job_cost.region_id).to eq 10000016
+      end
+
+      it "solar_system_id が再設定される" do
+        expect(assigns(:estimate_form).estimate_job_cost.solar_system_id).to eq 30001401
+      end
+
+      it "job_cost が再計算される" do
+        expect(assigns(:estimate_form).estimate_job_cost.total_job_cost).to_not eq @before_job_cost
+      end
+    end
+
+  end
+
+  describe "get set_material" do
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    #Dummy Estimate Data
+    before :each do
+      create_dummy_estimate_data
+      estimate_form = EstimateForm.new
+      estimate_form.estimate = @estimate
+      estimate_form.estimate_blueprint = @estimate.estimate_blueprint
+      estimate_form.estimate_job_cost = @estimate.estimate_job_cost
+      material_list = @estimate.estimate_materials
+      #session
+      session[:estimate_form] = estimate_form
+      session[:material_list] = material_list
+
+      #EstimateMaterial.require_materialは固定値を返させる
+      allow(EstimateMaterial).to receive(:require_material).and_return(10)
+
+      xhr :get, :set_material, {:me => 5,:runs => 3,:price_0 => 10.0}
+    end
+
+    it "@estimate_form.estimate_blueprint.me に 受け取った値を再設定する" do
+      expect(assigns(:estimate_form).estimate_blueprint.me).to eq (5)
+    end
+
+    it "@estimate_form.estimate_blueprint.runs に 受け取った値を再設定する" do
+      expect(assigns(:estimate_form).estimate_blueprint.runs).to eq (3)
+    end
+
+    it "受け取った値を元に原料の必要数、1つあたりの価格、合計価格、合計質量を再計算して設定する" do
+      expect(assigns(:material_list)[0].require_count).to eq (10)
+      expect(assigns(:material_list)[0].price).to eq (10.0)
+      expect(assigns(:material_list)[0].total_price).to eq (100.0)
+      expect(assigns(:material_list)[0].total_volume).to eq (10.0)
+    end
+
+  end
+
+  describe "get set_result" do
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    #Dummy Estimate Data
+    before :each do
+      create_dummy_estimate_data
+      estimate_form = EstimateForm.new
+      estimate_form.estimate = @estimate
+      estimate_form.estimate_blueprint = @estimate.estimate_blueprint
+      estimate_form.estimate_job_cost = @estimate.estimate_job_cost
+      material_list = @estimate.estimate_materials
+      #session
+      session[:estimate_form] = estimate_form
+      session[:material_list] = material_list
+
+      @before_sell_total_price = estimate_form.estimate.sell_total_price
+      xhr :get, :set_result, {:sell_price => 150}
+    end
+
+    it "@estimate_form.estimate.sell_price に 受け取った値を再設定する" do
+      expect(assigns(:estimate_form).estimate.sell_price).to eq (150)
+    end
+
+    it "受け取った値を元に見積もり結果を再計算する" do
+      expect(assigns(:estimate_form).estimate.sell_total_price).to_not eq @before_sell_total_price
+    end
+
+  end
+
+  describe "get set_sell_market_list" do
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data2_for_controller
+    #Dummy Estimate Data
+    before :each do
+      create_dummy_market_price_data
+      create_dummy_estimate_data
+      estimate_form = EstimateForm.new
+      estimate_form.estimate = @estimate
+      estimate_form.estimate_blueprint = @estimate.estimate_blueprint
+      estimate_form.estimate_job_cost = @estimate.estimate_job_cost
+      material_list = @estimate.estimate_materials
+      #session
+      session[:estimate_form] = estimate_form
+      session[:material_list] = material_list
+
+      xhr :get, :set_sell_market_list, {:sell_region_id => 10000016}
+    end
+
+    it "@sell_region_id に 受け取った値を再設定する" do
+      expect(assigns(:sell_region_id)).to eq ("10000016")
+    end
+
+    it "@region_list に region一覧が再設定されること" do
+      expect(assigns(:region_list).count).to be > 1
+    end
+
+    it "製品のリージョンマーケット情報一覧が取得され@product_market_listに設定されること" do
+      expect(assigns(:product_market_list).count).to eq 3
+    end
+
+    it "@product_region_sell_price_average に 製品のRegion内平均価格が設定されること" do
+      expect(assigns(:product_region_sell_price_average)).to eq (13.0)
+    end
+
+    it "@product_universe_sell_price_average に 製品のUniverse内平均価格が設定されること" do
+      expect(assigns(:product_universe_sell_price_average)).to eq (12.5)
+    end
+
+  end
+
   def create_dummy_estimate_data
-    create(:estimate_material, :estimate_id => 1, :type_id => 34, :base_quantity => 1, :adjusted_price => 1)
+    create(:estimate_material, :estimate_id => 1, :type_id => 34, :base_quantity => 1, :adjusted_price => 1,:volume => 1.0)
     create(:estimate_material, :estimate_id => 2)
     create(:estimate_blueprint, :estimate_id => 1, :type_id => 23784)
     create(:estimate_blueprint, :estimate_id => 2, :type_id => 23784)
@@ -422,5 +638,7 @@ RSpec.describe EstimatesController, :type => :controller do
 
   def create_dummy_industry_systems
     create(:industry_system_jita)
+    create(:industry_system_nonni)
   end
+
 end
