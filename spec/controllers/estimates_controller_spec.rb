@@ -181,6 +181,12 @@ RSpec.describe EstimatesController, :type => :controller do
       it "合計見積もり価格が設定されること" do
         expect(assigns(:estimate_form).estimate.total_cost).to eq 6059.436
       end
+
+      it "Session estimate_form がnilでない事" do
+        estimate_form = session[:estimate_form]
+        expect(estimate_form).to_not eq nil
+      end
+
     end
   end
 
@@ -217,7 +223,7 @@ RSpec.describe EstimatesController, :type => :controller do
 
       it "@solar_system_listにジョブコストを見積もった際のリージョンに対応したソーラーシステム一覧が設定されること" do
         expect(assigns(:solar_system_list)[0]).to eq (["Abagawa", 30000147])
-        expect(assigns(:solar_system_list)[1]).to eq ( ["Ahtulaima", 30000125])
+        expect(assigns(:solar_system_list)[1]).to eq (["Ahtulaima", 30000125])
       end
 
       it "元々の見積で作成されたBluePrintに対応した製品のRegion内の平均価格が設定されること" do
@@ -248,6 +254,12 @@ RSpec.describe EstimatesController, :type => :controller do
       it "合計見積もり価格が設定されること" do
         expect(assigns(:estimate_form).estimate.total_cost).to_not eq nil
       end
+
+      it "Session estimate_form がnilでない事" do
+        estimate_form = session[:estimate_form]
+        expect(estimate_form).to_not eq nil
+      end
+
     end
 
     context "作成者と現在ユーザが同じでない場合" do
@@ -259,36 +271,52 @@ RSpec.describe EstimatesController, :type => :controller do
   end
 
   describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Estimate" do
-        expect {
-          post :create, {:estimate => valid_attributes}, valid_session
-        }.to change(Estimate, :count).by(1)
-      end
-
-      it "assigns a newly created estimate as @estimate" do
-        post :create, {:estimate => valid_attributes}, valid_session
-        expect(assigns(:estimate)).to be_a(Estimate)
-        expect(assigns(:estimate)).to be_persisted
-      end
-
-      it "redirects to the created estimate" do
-        post :create, {:estimate => valid_attributes}, valid_session
-        expect(response).to redirect_to(Estimate.last)
-      end
+    #ユーザログイン
+    login_user
+    #マーケットデータはダミーデータを使用する
+    get_dummy_market_data_for_controller
+    before :each do
+      #'Abatis' 100mm Reinforced Steel Plates I Blueprint
+      session[:type_id] = 23784
+      #Market Price データ作成
+      create_dummy_market_price_data
+      #System毎のdummy cost index作成
+      create_dummy_industry_systems
+      #Crest から 取得するMarketのdummy data
+      create_dummy_market_data
+      create_dummy_market_detail_data
+      get :new
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved estimate as @estimate" do
-        post :create, {:estimate => invalid_attributes}, valid_session
-        expect(assigns(:estimate)).to be_a_new(Estimate)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {:estimate => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
-      end
+    it "Estimates に 値が格納されること" do
+      expect {
+        post :create
+      }.to change(Estimate, :count).by(1)
     end
+
+    it "EstimateJobCost に 値が格納されること" do
+      expect {
+        post :create
+      }.to change(EstimateJobCost, :count).by(1)
+    end
+
+    it "EstimateBlueprint に 値が格納されること" do
+      expect {
+        post :create
+      }.to change(EstimateBlueprint, :count).by(1)
+    end
+
+    it "EstimateMaterial に 値が格納されること" do
+      expect {
+        post :create
+      }.to change(EstimateMaterial, :count).by(9)
+    end
+
+    it "create 後は リダイレクトされること" do
+      post :create
+      expect(response).to redirect_to(Estimate.last)
+    end
+
   end
 
   describe "PUT update" do
