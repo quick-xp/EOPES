@@ -28,11 +28,19 @@ Dir.glob("spec/**/*steps.rb") { |f| load f, true }
 
 require 'capybara/dsl'
 require 'capybara/rspec'
-require 'capybara/webkit'
-require 'capybara/poltergeist'
-require 'rspec/autorun'
+#require 'capybara/webkit'
+#require 'capybara/poltergeist'
+#require 'rspec/autorun'
 require 'turnip'
 require 'turnip/capybara'
+
+Capybara.default_driver = :selenium
+Capybara.ignore_hidden_elements = true
+Capybara.run_server = false
+
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
 
 SimpleCov.start
 
