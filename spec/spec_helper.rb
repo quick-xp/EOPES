@@ -22,6 +22,18 @@ require File.expand_path("../support/controller_macros.rb",__FILE__)
 require File.expand_path("../support/crest_macros.rb",__FILE__)
 require 'rspec/rails'
 require 'simplecov'
+
+#Integration test
+Dir.glob("spec/**/*steps.rb") { |f| load f, true }
+
+require 'capybara/dsl'
+require 'capybara/rspec'
+require 'capybara/webkit'
+require 'capybara/poltergeist'
+require 'rspec/autorun'
+require 'turnip'
+require 'turnip/capybara'
+
 SimpleCov.start
 
 RSpec.configure do |config|

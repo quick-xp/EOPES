@@ -69,6 +69,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-webkit (1.5.2)
+      capybara (>= 2.3.0, < 2.5.0)
+      json
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
@@ -106,6 +109,8 @@ GEM
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.8)
+    gherkin (2.12.2)
+      multi_json (~> 1.3)
     globalid (0.3.3)
       activesupport (>= 4.1.0)
     hashie (3.4.0)
@@ -209,6 +214,10 @@ GEM
     rest-client (1.7.3)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rspec (3.2.0)
+      rspec-core (~> 3.2.0)
+      rspec-expectations (~> 3.2.0)
+      rspec-mocks (~> 3.2.0)
     rspec-core (3.2.2)
       rspec-support (~> 3.2.0)
     rspec-expectations (3.2.0)
@@ -266,6 +275,9 @@ GEM
     timecop (0.7.3)
     turbolinks (2.5.3)
       coffee-rails
+    turnip (1.3.0)
+      gherkin (>= 2.5)
+      rspec (>= 2.14.0, < 4.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.1)
@@ -292,6 +304,7 @@ DEPENDENCIES
   adminlte-rails
   annotate
   capybara
+  capybara-webkit
   coffee-rails
   database_cleaner
   devise
@@ -320,6 +333,7 @@ DEPENDENCIES
   therubyracer
   timecop
   turbolinks
+  turnip
   uglifier (>= 1.3.0)
   unicorn
   whenever

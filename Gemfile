@@ -77,6 +77,8 @@ group :test do
   gem "selenium-webdriver"
   gem "timecop"
   gem 'simplecov', :require => false
+  gem 'capybara-webkit'
+  gem 'turnip'
 end
 
 # Use ActiveModel has_secure_password
