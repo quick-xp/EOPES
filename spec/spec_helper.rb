@@ -24,7 +24,7 @@ require 'rspec/rails'
 require 'simplecov'
 
 #Integration test
-Dir.glob("spec/**/*steps.rb") { |f| load f, true }
+#Dir.glob("spec/**/*steps.rb") { |f| load f, true }
 
 require 'capybara/dsl'
 require 'capybara/rspec'

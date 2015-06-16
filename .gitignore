@@ -31,4 +31,7 @@
 # Ignore coverage
 /coverage
 
+# Ignore evidence
+/spec/tmp/*
+
 tags
