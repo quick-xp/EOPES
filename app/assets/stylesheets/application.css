@@ -13,7 +13,6 @@
  *= require ionicons-custom
  *= require dataTables/jquery.dataTables
  *= require admin-lte-custom
- *= require iCheck/all
  *= require dataTables.bootstrap-custom
  *= require jstree
  *= require_tree .
