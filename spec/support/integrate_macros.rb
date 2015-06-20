@@ -18,4 +18,5 @@ module IntegrateMacros
 
     OmniAuth.config.add_mock(:eve_online, {:uid => '123456789'})
   end
+
 end

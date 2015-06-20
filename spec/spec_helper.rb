@@ -37,7 +37,7 @@ require 'turnip/capybara'
 Capybara.default_driver = :selenium
 Capybara.ignore_hidden_elements = true
 Capybara.run_server = true
-Capybara.server_port = 3000
+Capybara.server_port = 3011
 
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
