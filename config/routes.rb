@@ -23,6 +23,9 @@ EOPES::Application.routes.draw do
     end
   end
 
+  get 'crest_debugs', to:"crest_debugs#index"
+  get 'crest_debugs/get_crest'
+
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks"}
   get "home/index"
   get "welcome/index"
