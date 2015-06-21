@@ -19,4 +19,13 @@ module IntegrateMacros
     OmniAuth.config.add_mock(:eve_online, {:uid => '123456789'})
   end
 
+  def get_crest_market_url(region_id, type_id, market_kind = "sell")
+    url = "https://crest-tq.eveonline.com/market/" +
+        region_id.to_s +
+        "/orders/"+ market_kind.downcase + "/?type=https://crest-tq.eveonline.com/types/" +
+        type_id.to_s +
+        "/"
+    return url
+  end
+
 end

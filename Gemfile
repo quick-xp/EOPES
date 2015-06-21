@@ -80,7 +80,8 @@ group :test do
   gem 'capybara-webkit'
   gem 'turnip'
   # for external web service test
-  gem "fakeweb", "~> 1.3"
+  #gem "fakeweb", "~> 1.3"
+  gem 'webmock'
 end
 
 # Use ActiveModel has_secure_password

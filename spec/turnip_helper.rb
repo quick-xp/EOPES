@@ -1,12 +1,15 @@
 require 'rails_helper'
 require File.expand_path("../support/integrate_macros.rb", __FILE__)
+require 'net/http'
 Dir.glob("spec/**/*steps.rb") { |f| load f, true }
 
 RSpec.configure do |config|
   @test_step_no = 0
+  #WebMock.allow_net_connect!
+  #重要
+  WebMock.disable_net_connect!(:allow_localhost => true)
 
-  config.include IntegrateMacros, :type => :request
-
+  config.include IntegrateMacros
   config.before(:type => :feature) do
     #dummy_omniauth_login
     OmniAuth.config.test_mode = true
@@ -21,6 +24,7 @@ RSpec.configure do |config|
                                    info: {character_name: 'Integration Test'}
                                    # etc.
                                })
+
   end
 
 end
