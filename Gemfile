@@ -79,6 +79,8 @@ group :test do
   gem 'simplecov', :require => false
   gem 'capybara-webkit'
   gem 'turnip'
+  # for external web service test
+  gem "fakeweb", "~> 1.3"
 end
 
 # Use ActiveModel has_secure_password
