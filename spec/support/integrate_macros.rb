@@ -28,4 +28,12 @@ module IntegrateMacros
     return url
   end
 
+  def json_response(file_name)
+    File.open('spec/fixtures/' + file_name, 'rb').read
+  end
+
+  def wait_for_ajax
+    sleep 1
+  end
+
 end

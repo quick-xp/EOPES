@@ -89,6 +89,10 @@ step %(表示する) do
   save_and_open_page
 end
 
+step %(ちょっと待つ) do
+  sleep 1
+end
+
 #Screenshot用
 step %(:screen_shotという名前でスクリーンショットを撮る) do |screen_shot|
   page.save_screenshot "spec/tmp/#{screen_shot}.png"

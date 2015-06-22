@@ -8,6 +8,8 @@ RSpec.configure do |config|
   #WebMock.allow_net_connect!
   #重要
   WebMock.disable_net_connect!(:allow_localhost => true)
+  #Factory Girlで投入するデータを反映させる
+  config.use_transactional_fixtures = false
 
   config.include IntegrateMacros
   config.before(:type => :feature) do
@@ -25,6 +27,19 @@ RSpec.configure do |config|
                                    # etc.
                                })
 
+  end
+
+  #database cleaner
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 
 end
