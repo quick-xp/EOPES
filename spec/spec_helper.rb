@@ -16,6 +16,35 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path("../../config/environment",__FILE__)
+require File.expand_path("../support/controller_macros.rb",__FILE__)
+require File.expand_path("../support/crest_macros.rb",__FILE__)
+require 'rspec/rails'
+require 'simplecov'
+
+#Integration test
+#Dir.glob("spec/**/*steps.rb") { |f| load f, true }
+
+require 'capybara/dsl'
+require 'capybara/rspec'
+#require 'capybara/webkit'
+#require 'capybara/poltergeist'
+#require 'rspec/autorun'
+require 'turnip'
+require 'turnip/capybara'
+
+Capybara.default_driver = :selenium
+Capybara.ignore_hidden_elements = true
+Capybara.run_server = true
+Capybara.server_port = 3011
+
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+SimpleCov.start
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -31,6 +60,13 @@ RSpec.configure do |config|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
+  # for Devise
+  config.include Devise::TestHelpers, :type => :controller
+  config.extend ControllerMacros, :type => :controller
+  # Crest ダミー取得用
+  config.extend CrestMacros, :type => :model
+  config.extend CrestMacros, :type => :controller
+
   # rspec-mocks config goes here. You can use an alternate test double
   # library (such as bogus or mocha) by changing the `mock_with` option here.
   config.mock_with :rspec do |mocks|
@@ -40,7 +76,7 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-# The settings below are suggested to provide a good initial experience
+  # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
   # These two settings work together to allow you to limit a spec run

@@ -27,5 +27,9 @@
 
 FactoryGirl.define do
   factory :user do
+    uid "100000000"
+    name "rspec test"
+    password "test#0001"
+    encrypted_password "test#0001"
   end
 end

@@ -28,4 +28,10 @@
 /lib/*.bundle
 /script/Makefile
 
+# Ignore coverage
+/coverage
+
+# Ignore evidence
+/spec/tmp/*
+
 tags

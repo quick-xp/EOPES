@@ -76,6 +76,12 @@ group :test do
   gem "launchy"
   gem "selenium-webdriver"
   gem "timecop"
+  gem 'simplecov', :require => false
+  gem 'capybara-webkit'
+  gem 'turnip'
+  # for external web service test
+  #gem "fakeweb", "~> 1.3"
+  gem 'webmock'
 end
 
 # Use ActiveModel has_secure_password
