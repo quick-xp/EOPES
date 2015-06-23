@@ -14,9 +14,8 @@ class IndustryActivity < ActiveRecord::Base
 
   def self.get_industry
     IndustryActivity.joins("inner join invTypes on industryActivity.typeID = invTypes.typeID")
-                    .joins("inner join trnTranslations on industryActivity.typeID = trnTranslations.keyID")
                     .where(activityID: 1)
-                    .where(['languageID = ? and tcID = ?','JA', 8])
+                    .where("invTypes.typeName NOT LIKE '%YC117%'")
                     .select("invTypes.typeID,invTypes.typeName")
                     .order("invTypes.typeName asc")
   end
