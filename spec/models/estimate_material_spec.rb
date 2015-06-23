@@ -41,6 +41,11 @@ RSpec.describe EstimateMaterial, :type => :model do
           expect(EstimateMaterial.require_material(2, 101, 10, false)).to eq 182
         end
       end
+      context "runs > 計算結果の場合 runs:10,base_quantity:1,ME:10" do
+        it "runsが必要量となる" do
+          expect(EstimateMaterial.require_material(10, 1, 10, false)).to eq 10
+        end
+      end
     end
 
     context "POS STATION の場合" do
@@ -57,6 +62,11 @@ RSpec.describe EstimateMaterial, :type => :model do
       context "runs:2,base_quantity:101,ME:10 の場合" do
         it "179 ( 2 * 101 * (0.98 * 0.9) (端数切り上げ))" do
           expect(EstimateMaterial.require_material(2, 101, 10, true)).to eq 179
+        end
+      end
+      context "runs > 計算結果の場合 runs:10,base_quantity:1,ME:10" do
+        it "runsが必要量となる" do
+          expect(EstimateMaterial.require_material(10, 1, 10, true)).to eq 10
         end
       end
     end

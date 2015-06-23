@@ -31,7 +31,13 @@ class EstimateMaterial < ActiveRecord::Base
     if pos_flag
       facility_modifier = 0.98
     end
-    (runs * base_quantity * facility_modifier * (1.0 - me * 0.01)).ceil
+    result = (runs * base_quantity * facility_modifier * (1.0 - me * 0.01)).ceil
+    #計算の結果Runsのほうが大きい場合はRunsを必要量とする
+    if result < runs
+      runs
+    else
+      result
+    end
   end
 
   def self.get_material_list(blueprint_type_id,blueprint_me,blueprint_te,blueprint_runs,jita_price_list)
