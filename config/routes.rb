@@ -1,4 +1,6 @@
 EOPES::Application.routes.draw do
+  resources :user_skills, :only => [:index,:create]
+
   get 'market_explorer/index'
   get 'market_explorer/market_groups'
   get 'market_explorer/set_location'

@@ -51,6 +51,8 @@ gem 'activerecord-session_store'
 gem "rest-client"
 #bulk insert
 gem "activerecord-import"
+#javascript controller 値受け渡し用
+gem "gon"
 
 #cron
 gem 'whenever', :require => false
