@@ -30,6 +30,7 @@
       </table>
     </div>
     <br/>
+
     <div class="box-body no-padding">
       <table class="table table-condensed">
         <tr>
@@ -109,6 +110,16 @@
                                    :unit => "isk",
                                    :separator => ".",
                                    :format => "%n %u") %>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Production Time
+          </td>
+          <td></td>
+          <td>
+            <%= second_to_time(@estimate_form.estimate.production_time) %>
           </td>
           <td></td>
         </tr>

@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
   <title>EOPES</title>
+  <%= include_gon %>
   <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -60,6 +61,12 @@
               <%= link_to market_explorer_index_path(:market_kind => "Buy") do %>
                   <%= image_tag("market.png", :size => "48x48") %>
                   <span>Market Explorer(Buy)</span>
+              <% end %>
+            </li>
+            <li class="<%= active?("user_skills") %>">
+              <%= link_to user_skills_path do %>
+                  <%= image_tag("levelTrained.png", :size => "48x48") %>
+                  <span>User Skill</span>
               <% end %>
             </li>
             <li>

@@ -23,10 +23,10 @@ class EstimateForm
     materials.each do |material|
       #Jita Top 15 low Price
       market_details = MarketDetail
-      .includes(:market)
-      .where(station_id: 60003760, markets: {type_id: material.materialTypeID})
-      .order(:price)
-      .limit(15)
+                           .includes(:market)
+                           .where(station_id: 60003760, markets: {type_id: material.materialTypeID})
+                           .order(:price)
+                           .limit(15)
 
       #average
       average_price = 0
@@ -81,6 +81,11 @@ class EstimateForm
       self.estimate.material_total_cost += m.total_price
     end
 
+    #Production Time
+    self.estimate.production_time = self.estimate.calc_production_time(self.estimate_blueprint.type_id,
+                                                                       self.estimate_blueprint.te,
+                                                                       self.estimate_blueprint.runs,
+                                                                       self.user_id)
     #Total Cost
     self.estimate.total_cost = self.estimate_job_cost.total_job_cost + self.estimate.material_total_cost
 

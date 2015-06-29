@@ -153,12 +153,12 @@ RSpec.describe EstimatesController, :type => :controller do
         expect(actual_material_list).to match_array expect_material_list
       end
 
-      it "選ばれたBlueprintの情報が@estimate_formに設定されていること その際 runs:1,me:10,te:10であること" do
+      it "選ばれたBlueprintの情報が@estimate_formに設定されていること その際 runs:1,me:10,te:20であること" do
         estimate_form = assigns(:estimate_form)
         expect(estimate_form.estimate_blueprint.type_id).to eq 23784
         expect(estimate_form.estimate_blueprint.runs).to eq 1
         expect(estimate_form.estimate_blueprint.me).to eq 10
-        expect(estimate_form.estimate_blueprint.te).to eq 10
+        expect(estimate_form.estimate_blueprint.te).to eq 20
       end
 
       it "選ばれたBlueprintの生産時ジョブコストが計算され@estimate_formに設定されていること" do
@@ -176,6 +176,10 @@ RSpec.describe EstimatesController, :type => :controller do
 
       it "選ばれたBlueprintに対応した製品の市場価格一覧が@product_market_listに設定されること" do
         expect(assigns(:product_market_list)).to_not eq nil
+      end
+
+      it "Production Time が設定されること" do
+        expect(assigns(:estimate_form).estimate.production_time).to_not eq nil
       end
 
       it "合計見積もり価格が設定されること" do
@@ -249,6 +253,10 @@ RSpec.describe EstimatesController, :type => :controller do
 
       it "元々の見積で作成されたBluePrintに対応した製品の市場価格一覧が@product_market_listに設定されること" do
         expect(assigns(:product_market_list)).to_not eq nil
+      end
+
+      it "Production Time が設定されること" do
+        expect(assigns(:estimate_form).estimate.production_time).to_not eq nil
       end
 
       it "合計見積もり価格が設定されること" do

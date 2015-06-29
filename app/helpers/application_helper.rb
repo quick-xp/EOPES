@@ -1,3 +1,5 @@
+require 'ruby-duration'
+
 module ApplicationHelper
   def active?(*controllers_name)
     return "active" if controllers_name.include?(params[:controller])
@@ -18,5 +20,13 @@ module ApplicationHelper
     else
       999
     end
+  end
+
+  def second_to_time(second)
+    if second.nil?
+      second = 0
+    end
+    d = Duration.new(second)
+    return d.format("%dd %Hh %Mm %Ss")
   end
 end

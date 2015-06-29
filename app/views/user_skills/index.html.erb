@@ -1,0 +1,54 @@
+<section class="content-header">
+  <h1>User Skills</h1>
+</section>
+
+<p id="notice"><%= notice %></p>
+
+<section class="content">
+  <%= form_for @user_skill_form, url: user_skills_path, method: :post do |f| %>
+      <% if @user_skill_form.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@user_skill_form.errors.count, "error") %> prohibited this user skill from being
+              saved:</h2>
+
+            <ul>
+              <% @user_skill_form.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+      未設定の場合はスキル Level5 となります</br>
+      本画面で設定された内容で各種見積もりを行います</br></br>
+      <div class="form-group">
+        <div class="radio-group">
+          <label>Industry:</label>
+          <%= f.radio_button :skill_3380, 0 %>0
+          <%= f.radio_button :skill_3380, 1 %>1
+          <%= f.radio_button :skill_3380, 2 %>2
+          <%= f.radio_button :skill_3380, 3 %>3
+          <%= f.radio_button :skill_3380, 4 %>4
+          <%= f.radio_button :skill_3380, 5 %>5
+          <p>description : Allows basic operation of factories. 4% reduction in manufacturing time per skill level.</p>
+        </div>
+        <br/>
+
+        <div class="radio-group">
+          <label>Advanced Industry:</label>
+          <%= f.radio_button :skill_3388, 0 %>0
+          <%= f.radio_button :skill_3388, 1 %>1
+          <%= f.radio_button :skill_3388, 2 %>2
+          <%= f.radio_button :skill_3388, 3 %>3
+          <%= f.radio_button :skill_3388, 4 %>4
+          <%= f.radio_button :skill_3388, 5 %>5
+          <p>description : Skill at efficiently using industrial facilities. 3% reduction in all manufacturing and
+            research times per skill level.
+          </p>
+        </div>
+      </div>
+      <div>
+        <%= f.submit 'Update', :class => 'btn btn-primary' %>
+      </div>
+      <br/>
+  <% end %>
+</section>
