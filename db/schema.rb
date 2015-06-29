@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150623134807) do
+ActiveRecord::Schema.define(version: 20150628030429) do
 
   create_table "estimate_blueprints", force: :cascade do |t|
     t.integer  "type_id",     limit: 4
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20150623134807) do
     t.decimal  "total_volume",                  precision: 20, scale: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "production_time",     limit: 4
   end
 
   create_table "industry_systems", force: :cascade do |t|

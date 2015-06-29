@@ -53,7 +53,8 @@ gem "rest-client"
 gem "activerecord-import"
 #javascript controller 値受け渡し用
 gem "gon"
-
+#時刻表示用
+gem "ruby-duration"
 #cron
 gem 'whenever', :require => false
 

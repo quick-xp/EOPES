@@ -48,4 +48,36 @@ RSpec.describe Estimate, :type => :model do
       end
     end
   end
+
+  describe "Production Time算出" do
+    context "POS以外の場合" do
+      context "type_id:1153,te:20,runs:1,UserSkill(3380:5,3388:5)" do
+        it "432" do
+          create(:user_skill, :user_id => 1, :skill_id => 3380, :skill_level => 5)
+          create(:user_skill, :user_id => 1, :skill_id => 3388, :skill_level => 5)
+          expect(Estimate.new.calc_production_time(1153, 20, 1, 1, false)).to eq 490
+        end
+      end
+      context "type_id:1153,te:20,runs:100,UserSkill(3380:5,3388:5)" do
+        it "43200" do
+          create(:user_skill, :user_id => 1, :skill_id => 3380, :skill_level => 5)
+          create(:user_skill, :user_id => 1, :skill_id => 3388, :skill_level => 5)
+          expect(Estimate.new.calc_production_time(1153, 20, 100, 1, false)).to eq 48960
+        end
+      end
+      context "type_id:1153,te:0,runs:100,UserSkill(3380:0,3388:0)" do
+        it "90000" do
+          create(:user_skill, :user_id => 1, :skill_id => 3380, :skill_level => 0)
+          create(:user_skill, :user_id => 1, :skill_id => 3388, :skill_level => 0)
+          expect(Estimate.new.calc_production_time(1153, 0, 100, 1, false)).to eq 90000
+        end
+      end
+      context "type_id:1153,te:20,runs:100,UserSkill(未設定)" do
+        it "43200" do
+          expect(Estimate.new.calc_production_time(1153, 20, 100, 1, false)).to eq 48960
+        end
+      end
+    end
+  end
+
 end

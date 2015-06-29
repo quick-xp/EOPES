@@ -29,13 +29,14 @@ class EstimatesController < ApplicationController
 
   def new
     @estimate_form = EstimateForm.new
+    @estimate_form.user_id = get_current_user_id
 
     #blueprint
     @estimate_blueprint = EstimateBlueprint.new
     @estimate_blueprint.type_id = session[:type_id]
     @estimate_blueprint.runs = 1
     @estimate_blueprint.me = 10
-    @estimate_blueprint.te = 10
+    @estimate_blueprint.te = 20
     @estimate_form.estimate_blueprint = @estimate_blueprint
 
     #jita price
@@ -210,6 +211,7 @@ class EstimatesController < ApplicationController
     @material_list = session[:material_list]
     @estimate_form = session[:estimate_form]
     @estimate_form.estimate_blueprint.me = params["me"].to_i
+    @estimate_form.estimate_blueprint.te = params["te"].to_i
     @estimate_form.estimate_blueprint.runs = params["runs"].to_i
     @material_list.each_with_index do |m, i|
       #Re Calc Require Material

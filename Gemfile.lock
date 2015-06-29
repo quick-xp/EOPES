@@ -123,6 +123,7 @@ GEM
     hashie (3.4.0)
     hike (1.2.3)
     i18n (0.7.0)
+    iso8601 (0.8.6)
     jbuilder (2.2.12)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
@@ -243,6 +244,10 @@ GEM
       rspec-mocks (~> 3.2.0)
       rspec-support (~> 3.2.0)
     rspec-support (3.2.2)
+    ruby-duration (3.2.1)
+      activesupport (>= 3.0.0)
+      i18n
+      iso8601
     rubyzip (1.1.7)
     safe_yaml (1.0.4)
     sass (3.4.13)
@@ -339,6 +344,7 @@ DEPENDENCIES
   ransack
   rest-client
   rspec-rails
+  ruby-duration
   sass-rails
   sdoc
   selenium-webdriver
