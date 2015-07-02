@@ -271,6 +271,7 @@ class EstimatesController < ApplicationController
     page_permission(@estimate.user_id)
 
     @estimate_form = EstimateForm.new
+    @estimate_form.user_id = get_current_user_id
     @estimate_form.estimate = @estimate
     @estimate_form.estimate_blueprint = @estimate.estimate_blueprint
     @estimate_form.estimate_job_cost = @estimate.estimate_job_cost
