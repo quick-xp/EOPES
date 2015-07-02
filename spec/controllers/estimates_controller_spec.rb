@@ -186,6 +186,10 @@ RSpec.describe EstimatesController, :type => :controller do
         expect(assigns(:estimate_form).estimate.total_cost).to_not eq nil
       end
 
+      it "user_idが設定されること" do
+        expect(assigns(:estimate_form).user_id).to eq "100000000"
+      end
+
       it "Session estimate_form がnilでない事" do
         estimate_form = session[:estimate_form]
         expect(estimate_form).to_not eq nil
@@ -261,6 +265,10 @@ RSpec.describe EstimatesController, :type => :controller do
 
       it "合計見積もり価格が設定されること" do
         expect(assigns(:estimate_form).estimate.total_cost).to_not eq nil
+      end
+
+      it "user_idが設定されること" do
+        expect(assigns(:estimate_form).user_id).to eq "100000000"
       end
 
       it "Session estimate_form がnilでない事" do
