@@ -2859,7 +2859,7 @@ Component: timeline
   padding: 0;
   width: 18px;
   height: 18px;
-  background: rgba(255, 255, 255, 0.7) url(iCheck/minimal/minimal.png) no-repeat;
+  background: rgba(255, 255, 255, 0.7) url(https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.1/skins/minimal/minimal.png) no-repeat;
   border: none;
   cursor: pointer;
 }
