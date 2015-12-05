@@ -32,7 +32,12 @@ class MarketExplorerController < ApplicationController
     end
 
     #Item取得
-    inv_types = InvType.where.not(:marketGroupID => nil)
+    # marketGroupIDがInvMarketGroupに存在しないItemは取得しない
+    #inv_types = InvType.where.not(:marketGroupID => nil)
+    inv_types = InvType.joins("INNER JOIN invMarketGroups
+      ON invTypes.marketGroupID = invMarketGroups.marketGroupID")
+      .where
+      .not(:marketGroupID => nil)
     inv_types.each do |item|
       v = Hash::new()
       v['id'] = item.typeID + 100000 #idがかぶらないように100000足す
