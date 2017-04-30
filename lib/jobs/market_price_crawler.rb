@@ -2,7 +2,7 @@
 require 'rest-client'
 class Jobs::MarketPriceCrawler
   def run
-    json = RestClient.get("https://public-crest.eveonline.com/market/prices/")
+    json = RestClient.get("https://crest-tq.eveonline.com/market/prices/")
     crest_markets = ActiveSupport::JSON.decode(json)
     crest_markets = crest_markets['items']
     markets_result = []

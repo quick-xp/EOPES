@@ -111,7 +111,7 @@ class Market < ActiveRecord::Base
   def self.get_market_data_from_crest(region_id, type_id, access_token, market_kind = "sell")
     json = access_token.get("https://crest-tq.eveonline.com/market/" +
                                 region_id.to_s +
-                                "/orders/"+ market_kind.downcase + "/?type=https://crest-tq.eveonline.com/types/" +
+                                "/orders/"+ market_kind.downcase + "/?type=https://crest-tq.eveonline.com/inventory/types/" +
                                 type_id.to_s +
                                 "/")
     ActiveSupport::JSON.decode(json.response.env.body)

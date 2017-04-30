@@ -1,9 +1,9 @@
-worker_processes 2
+worker_processes 6
 
 listen File.expand_path("/tmp/unicorn_eopes.sock", ENV['EOPES_ROOT'])
 pid File.expand_path("/tmp/unicorn.pid", ENV['EOPES_ROOT'])
 
-timeout 60
+timeout 120
 
 preload_app true
 

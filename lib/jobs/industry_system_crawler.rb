@@ -2,7 +2,7 @@
 require 'rest-client'
 class Jobs::IndustrySystemCrawler
   def run
-    json = RestClient.get("https://public-crest.eveonline.com/industry/systems/")
+    json = RestClient.get("https://crest-tq.eveonline.com/industry/systems/")
     crest_industry_system = ActiveSupport::JSON.decode(json)
     items = crest_industry_system['items']
     cost_results = []
