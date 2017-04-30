@@ -1,7 +1,7 @@
 worker_processes 6
 
-listen File.expand_path("/tmp/unicorn_eopes.sock", ENV['EOPES_ROOT'])
-pid File.expand_path("/tmp/unicorn.pid", ENV['EOPES_ROOT'])
+listen File.expand_path("/data/eopes/unicorn/unicorn_eopes.sock", ENV['EOPES_ROOT'])
+pid File.expand_path("/data/eopes/unicorn/unicorn.pid", ENV['EOPES_ROOT'])
 
 timeout 120
 

@@ -4,7 +4,7 @@ set -e
 
 TIMEOUT=${TIMEOUT-60}
 APP_ROOT=${EOPES_ROOT}
-PID=/tmp/unicorn.pid
+PID=/data/eopes/unicorn/unicorn.pid
 RAILS_ENV=production
 #RAILS_ENV=development
 CMD="bundle exec unicorn -D -c $APP_ROOT/config/unicorn.rb -E $RAILS_ENV"

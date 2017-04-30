@@ -1,4 +1,4 @@
-FROM ruby:2.0
+FROM ruby:2.1
 
 RUN mkdir -p /var/www/eopes
 WORKDIR /var/www/eopes
@@ -31,8 +31,11 @@ RUN git checkout $gitbranch
 RUN git pull origin HEAD
 RUN bundle install
 
-RUN rm config/database.yml && ln -s /data/eopes/config/database.yml config/database.yml
+ENV EOPES_ROOT=/var/www/eopes/current
+ENV RAILS_ENV=production
+RUN ln -s /data/eopes/config/database.yml config/database.yml
 RUN rm config/secrets.yml && ln -s /data/eopes/config/secrets.yml config/secrets.yml
+RUN ln -s /data/eopes/config/.env .env
 
 # Cron
 COPY /config/cron/cron.txt /var/crontab.txt
