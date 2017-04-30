@@ -1,4 +1,4 @@
-worker_processes 6
+worker_processes 1
 
 listen File.expand_path("/data/eopes/unicorn/unicorn_eopes.sock", ENV['EOPES_ROOT'])
 pid File.expand_path("/data/eopes/unicorn/unicorn.pid", ENV['EOPES_ROOT'])
